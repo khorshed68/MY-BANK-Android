@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1E3A8A"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_people"
+            android:tint="@android:color/white"
+            android:contentDescription="Customer Icon" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Customer Management"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginStart="12dp" />
+
+        <Button
+            android:id="@+id/backToDashboardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="◄ Back to Dashboard"
+            android:textColor="@android:color/white"
+            android:background="?attr/selectableItemBackground"
+            android:textAllCaps="false"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
+    </LinearLayout>
+
+    <!-- Search and Filter Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@android:color/white"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search:"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="8dp" />
+
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:hint="Search by name, account, phone, email..."
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:background="@drawable/edit_text_background"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="🔍 Search"
+            android:textColor="@android:color/white"
+            android:background="#2196F3"
+            android:textAllCaps="false"
+            android:layout_marginStart="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
+    </LinearLayout>
+
+    <!-- Status Filter and Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        android:background="@android:color/white"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status:"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="8dp" />
+
+        <Spinner
+            android:id="@+id/statusSpinner"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:background="@drawable/edit_text_background"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/refreshButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="🔄 Refresh"
+            android:textColor="@android:color/white"
+            android:background="#4CAF50"
+            android:textAllCaps="false"
+            android:layout_marginEnd="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
+
+        <Button
+            android:id="@+id/showBlockedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="🚫 Blocked"
+            android:textColor="@android:color/white"
+            android:background="#F44336"
+            android:textAllCaps="false"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="#F5F5F5" />
+
+    <!-- Customer Accounts Table -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Customer Accounts"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Table Header -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Header Row -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="#E0E0E0"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:text="Account #"
+                        android:textColor="#333333"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:padding="4dp" />
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:text="Customer Name"
+                        android:textColor="#333333"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:padding="4dp" />
+
+                    <TextView
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:text="Email"
+                        android:textColor="#333333"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:padding="4dp" />
+
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Phone"
+                        android:textColor="#333333"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:padding="4dp" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Type"
+                        android:textColor="#333333"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:padding="4dp" />
+
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Balance"
+                        android:textColor="#333333"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:padding="4dp" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Status"
+                        android:textColor="#333333"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:padding="4dp" />
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:text="Created Date"
+                        android:textColor="#333333"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:padding="4dp" />
+                </LinearLayout>
+
+                <!-- RecyclerView for Table Rows -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/customersRecyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- Empty State -->
+        <LinearLayout
+            android:id="@+id/emptyStateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No customers found"
+                android:textColor="#999999"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Try adjusting your search or filters"
+                android:textColor="#CCCCCC"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Loading Indicator -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</LinearLayout>

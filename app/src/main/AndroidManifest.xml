@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" 
+        android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" 
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MYBANK"
+        android:usesCleartextTraffic="false">
+        
+        <!-- Splash Activity -->
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MYBANK.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Authentication Activities -->
+        <activity android:name=".activities.LoginActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.StaffLoginActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.AdminLoginActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.AdminRegistrationActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.RegisterActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.StaffRegisterActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.ForgotPasswordActivity" 
+            android:exported="false" />
+
+        <!-- Customer Activities -->
+        <activity android:name=".activities.customer.CustomerDashboardActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.customer.DepositActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.customer.WithdrawActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.customer.TransferActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.customer.TransactionsActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.customer.ProfileActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.customer.SettingsActivity" 
+            android:exported="false" />
+
+        <!-- Staff Activities -->
+        <activity android:name=".activities.staff.StaffDashboardActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.staff.CreateAccountActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.staff.SearchCustomersActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.staff.ProcessDepositActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.staff.ProcessWithdrawalActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.staff.ReportsActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.staff.StaffActivityLogsActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.staff.ChequeManagementActivity" 
+            android:exported="false" />
+        <activity android:name=".AccountApprovalActivity" 
+            android:exported="false" />
+        
+        <!-- Customer Cheque Management -->
+        <activity android:name=".activities.customer.CustomerChequeManagementActivity" 
+            android:exported="false" />
+
+        <!-- Admin Activities -->
+        <activity android:name=".activities.admin.AdminDashboardActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.admin.ManageUsersActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.admin.CreateUserActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.admin.ManageAccountsActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.admin.AuditLogsActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.admin.AdminReportsActivity" 
+            android:exported="false" />
+
+        <!-- Main Activity (legacy, can be removed) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
+    </application>
+
+</manifest>

@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- Header with Profile -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#3F51B5"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <!-- Profile Picture -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="4dp">
+
+            <ImageView
+                android:id="@+id/staffProfileImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_person"
+                android:scaleType="centerCrop"
+                android:contentDescription="Profile" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Staff Info -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Bank - Staff Portal"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/staffNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sabbir Sheikh"
+                android:textSize="14sp"
+                android:textColor="#CCFFFFFF"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/staffEmailText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="sabbir1666@gmail.com"
+                android:textSize="12sp"
+                android:textColor="#99FFFFFF"
+                android:layout_marginTop="1dp" />
+
+        </LinearLayout>
+
+        <!-- Role and Last Login -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="end">
+
+            <TextView
+                android:id="@+id/staffRoleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Manager"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#FFC107"
+                android:background="#FFFFFF33"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/lastLoginText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last Login: 02-Jan-2026 14:25"
+                android:textSize="10sp"
+                android:textColor="#99FFFFFF" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Welcome Message -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/welcomeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Welcome, Sabbir Sheikh!"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="#1E293B" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Select an option from the menu below to get started"
+                        android:textSize="14sp"
+                        android:textColor="#64748B"
+                        android:layout_marginTop="4dp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Account Management Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Account Management"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#1E293B"
+                android:layout_marginBottom="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/pendingRequestsButton"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="📋 Pending Requests"
+                    android:textAllCaps="false"
+                    android:textSize="13sp"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#FF9800" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/createAccountButton"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="+ Create Account"
+                    android:textAllCaps="false"
+                    android:textSize="13sp"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#4CAF50" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/viewCustomersButton"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:text="👥 View Customers"
+                    android:textAllCaps="false"
+                    android:textSize="13sp"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#2196F3" />
+
+            </LinearLayout>
+
+            <!-- Cheque Management Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cheque Management"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#1E293B"
+                android:layout_marginBottom="12dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/manageChequesButton"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:text="💳 Manage Cheques"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                app:cornerRadius="12dp"
+                android:backgroundTint="#00BCD4"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Reports & Analytics Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reports &amp; Analytics"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#1E293B"
+                android:layout_marginBottom="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/generateReportsButton"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="📊 Generate Reports"
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#9C27B0" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/activityLogsButton"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="1"
+                    android:text="📝 Activity Logs"
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#607D8B" />
+
+            </LinearLayout>
+
+            <!-- Quick Tips Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#E3F2FD"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="💡 Quick Tips"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#1976D2"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="• Check pending requests daily to ensure timely account approvals"
+                        android:textSize="13sp"
+                        android:textColor="#455A64"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="• Always log activities for compliance and audit purposes"
+                        android:textSize="13sp"
+                        android:textColor="#455A64"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="• Use the search function to quickly find customer accounts"
+                        android:textSize="13sp"
+                        android:textColor="#455A64" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Bottom Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@android:color/white"
+        android:elevation="4dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/refreshButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="🔄 Refresh"
+            android:textAllCaps="false"
+            app:cornerRadius="8dp"
+            android:backgroundTint="#4CAF50" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/logoutButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="🚪 Logout"
+            android:textAllCaps="false"
+            app:cornerRadius="8dp"
+            android:backgroundTint="#F44336" />
+
+    </LinearLayout>
+
+</LinearLayout>

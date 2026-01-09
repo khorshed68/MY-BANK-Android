@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F1F5F9"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <!-- Profile Image -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:cardCornerRadius="60dp"
+            app:cardElevation="8dp"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:id="@+id/profileImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_person"
+                android:scaleType="centerCrop"
+                android:contentDescription="Profile Picture" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- MY BANK Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MY BANK"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#6366F1"
+            android:background="@drawable/gradient_purple"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Subtitle -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bank Account Management System"
+            android:textSize="14sp"
+            android:textColor="#64748B"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E2E8F0"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Welcome Text -->
+        <TextView
+            android:id="@+id/welcomeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome, Customer Name (Account: 1)"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#1E293B"
+            android:layout_marginBottom="32dp" />
+
+        <!-- ACCOUNT OPERATIONS Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="💼 ACCOUNT OPERATIONS"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#1E293B"
+                android:layout_marginBottom="16dp" />
+
+            <!-- First Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/createAccountButton"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="+ Create\nAccount"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="#22D3EE"
+                    app:strokeWidth="2dp"
+                    android:backgroundTint="@android:color/white"
+                    android:textColor="#0891B2" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/checkBalanceButton"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:text="🔒 Check\nBalance"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#E2E8F0"
+                    android:textColor="#475569" />
+
+            </LinearLayout>
+
+            <!-- Second Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/accountOverviewButton"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="📊 Account\nOverview"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#FEE2E2"
+                    android:textColor="#991B1B" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/transactionHistoryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:text="📄 Transaction\nHistory"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#DBEAFE"
+                    android:textColor="#1E40AF" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E2E8F0"
+            android:layout_marginBottom="24dp" />
+
+        <!-- TRANSACTIONS Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="💸 TRANSACTIONS"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#1E293B"
+                android:layout_marginBottom="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/depositButton"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp"
+                    android:text="⬇ Deposit\nMoney"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#D1FAE5"
+                    android:textColor="#065F46" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/withdrawButton"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:text="⬆ Withdraw"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#FED7AA"
+                    android:textColor="#9A3412" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/fundTransferButton"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:text="💱 Fund\nTransfer"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#E0E7FF"
+                    android:textColor="#3730A3" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E2E8F0"
+            android:layout_marginBottom="24dp" />
+
+        <!-- CHEQUE MANAGEMENT Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📝 CHEQUE MANAGEMENT"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#1E293B"
+                android:layout_marginBottom="16dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chequeServicesButton"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:text="💳 Cheque Services"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                app:cornerRadius="12dp"
+                android:backgroundTint="#F3F4F6"
+                android:textColor="#374151" />
+
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E2E8F0"
+            android:layout_marginBottom="24dp" />
+
+        <!-- NOTIFICATIONS Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🔔 NOTIFICATIONS"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#1E293B"
+                android:layout_marginBottom="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/settingsButton"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="⚙ Settings"
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#F3F4F6"
+                    android:textColor="#374151" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/historyButton"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:text="📋 History"
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#FECACA"
+                    android:textColor="#991B1B" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E2E8F0"
+            android:layout_marginBottom="24dp" />
+
+        <!-- SYSTEM Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🔧 SYSTEM"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#1E293B"
+                android:layout_marginBottom="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/profileSettingsButton"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:text="👤 Profile\nSettings"
+                    android:textAllCaps="false"
+                    android:textSize="11sp"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#FEF3C7"
+                    android:textColor="#92400E" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/logoutButton"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="🚪 Logout"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#FEE2E2"
+                    android:textColor="#991B1B" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/exitButton"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:text="✖ Exit"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#FECACA"
+                    android:textColor="#991B1B" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Account Info Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Account Number"
+                    android:textSize="12sp"
+                    android:textColor="#64748B" />
+
+                <TextView
+                    android:id="@+id/accountNumberText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1234567890"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#1E293B"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Current Balance"
+                    android:textSize="12sp"
+                    android:textColor="#64748B" />
+
+                <TextView
+                    android:id="@+id/balanceText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TAKA 0.00"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:textColor="#059669" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</ScrollView>

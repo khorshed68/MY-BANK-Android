@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#F5F5F5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Header Icon -->
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_logo"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Bank Logo"/>
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Account Application Form"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#FFC107"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Subtitle -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="24dp">
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✨"
+                android:textSize="16sp"
+                android:layout_marginEnd="8dp"/>
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit your application for staff approval"
+                android:textSize="14sp"
+                android:textColor="#666666"/>
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✨"
+                android:textSize="16sp"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+        <!-- Form Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Personal Information Header -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="👤 Personal Information"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/section_header_personal"
+                    android:padding="12dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Profile Picture -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📷 Profile Picture (Optional)"
+                    android:textSize="14sp"
+                    android:textColor="#666666"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="16dp">
+
+                    <ImageView
+                        android:id="@+id/profileImageView"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_person"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/circular_image_border"
+                        android:contentDescription="Profile Picture"/>
+
+                    <Button
+                        android:id="@+id/chooseImageButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📷 Choose Image"
+                        android:backgroundTint="#7C4DFF"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginStart="16dp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Max size: 2 MB\nFormat: JPG, PNG, JPEG"
+                    android:textSize="11sp"
+                    android:textColor="#999999"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Full Name -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="👤 Full Name *"
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="4dp"/>
+
+                <EditText
+                    android:id="@+id/nameInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:hint="Enter your full name"
+                    android:inputType="textPersonName"
+                    android:background="@drawable/edit_text_background"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Email Address -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✉️ Email Address"
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="4dp"/>
+
+                <EditText
+                    android:id="@+id/emailInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:hint="example@email.com"
+                    android:inputType="textEmailAddress"
+                    android:background="@drawable/edit_text_background"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Phone Number -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📱 Phone Number *"
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="4dp"/>
+
+                <EditText
+                    android:id="@+id/phoneInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:hint="01XXXXXXXXX"
+                    android:inputType="phone"
+                    android:background="@drawable/edit_text_background"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Address -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🏠 Address"
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="4dp"/>
+
+                <EditText
+                    android:id="@+id/addressInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:hint="Enter your address"
+                    android:inputType="textPostalAddress"
+                    android:background="@drawable/edit_text_background"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Identity Information Header -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🆔 Identity Information"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/section_header_identity"
+                    android:padding="12dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Identity Document Type -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📄 Identity Document Type *"
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="4dp"/>
+
+                <Spinner
+                    android:id="@+id/identityTypeSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/spinner_background"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Identity Number -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🔢 Identity Number *"
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="4dp"/>
+
+                <EditText
+                    android:id="@+id/identityNumberInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:hint="Enter your identity number"
+                    android:inputType="text"
+                    android:background="@drawable/edit_text_background"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Account Details Header -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="💰 Account Details"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/section_header_account"
+                    android:padding="12dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Account Type -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💳 Account Type *"
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="4dp"/>
+
+                <Spinner
+                    android:id="@+id/accountTypeSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/spinner_background"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Initial Deposit -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💵 Initial Deposit (৳) *"
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="4dp"/>
+
+                <EditText
+                    android:id="@+id/initialDepositInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:hint="Minimum ৳1000"
+                    android:inputType="numberDecimal"
+                    android:background="@drawable/edit_text_background"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Important Information Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="#E3F2FD"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Important Information"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#1976D2"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✓ Your application will be reviewed by our staff within 24 hours"
+                    android:textSize="12sp"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✓ You will receive a notification once your account is approved"
+                    android:textSize="12sp"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✓ Please ensure all information is accurate and complete"
+                    android:textSize="12sp"
+                    android:textColor="#333333"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/submitButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:text="✓ Submit Application"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:backgroundTint="#4CAF50"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/backButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:text="← Back"
+                android:textSize="16sp"
+                android:backgroundTint="#F44336"
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+        <!-- Progress Bar -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+</ScrollView>

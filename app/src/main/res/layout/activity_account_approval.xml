@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#3B5998"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:elevation="4dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@android:drawable/ic_menu_revert"
+            android:tint="#FFFFFF"
+            android:contentDescription="Back"
+            android:layout_marginEnd="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Account Approval Queue"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvPendingCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pending: 0"
+            android:textColor="#FFC107"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:background="@drawable/pending_count_bg"/>
+    </LinearLayout>
+
+    <!-- Filter and Refresh Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:background="#FFFFFF"
+        android:elevation="2dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filter:"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginEnd="12dp"/>
+
+        <Spinner
+            android:id="@+id/filterSpinner"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:spinnerMode="dropdown"
+            android:background="@drawable/spinner_background"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"/>
+
+        <Button
+            android:id="@+id/btnRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="🔄 Refresh"
+            android:backgroundTint="#4CAF50"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:layout_marginStart="12dp"/>
+    </LinearLayout>
+
+    <!-- Table Container -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:background="#FFFFFF">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Table Header -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E0E0E0"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="ID"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:textSize="14sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Customer Name"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"/>
+
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="Phone"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"/>
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Account Type"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"/>
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Initial Deposit"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"/>
+
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="Request Date"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"/>
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Status"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"/>
+
+                <TextView
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:text="Actions"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"/>
+            </LinearLayout>
+
+            <!-- Table Body -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/applicationsRecyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Empty State -->
+    <LinearLayout
+        android:id="@+id/emptyStateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No content in table"
+            android:textSize="16sp"
+            android:textColor="#999999"/>
+    </LinearLayout>
+
+    <!-- Loading Indicator -->
+    <ProgressBar
+        android:id="@+id/loadingProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+</LinearLayout>

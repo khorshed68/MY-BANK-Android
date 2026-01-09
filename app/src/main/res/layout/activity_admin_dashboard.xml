@@ -1,0 +1,704 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E5E7EB"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F9FAFB"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:elevation="4dp"
+            android:gravity="center_vertical">
+
+            <!-- Left: Logo and Title -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@mipmap/ic_launcher"
+                    android:contentDescription="Admin Icon"
+                    android:layout_marginEnd="12dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ADMIN DASHBOARD"
+                    android:textColor="#F59E0B"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:shadowColor="#000000"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="3"/>
+
+            </LinearLayout>
+
+            <!-- Right: Profile Section -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/adminProfileImage"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@mipmap/ic_launcher"
+                    android:contentDescription="Profile Image"
+                    android:scaleType="centerCrop"
+                    android:layout_marginEnd="12dp"
+                    android:background="@android:color/white"
+                    android:padding="2dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Welcome,"
+                        android:textSize="11sp"
+                        android:textColor="#6B7280" />
+
+                    <TextView
+                        android:id="@+id/adminNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MD KHORSHED SHEIKH"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#1F2937" />
+
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/refreshButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:text="🔄 Refresh"
+                    android:textSize="13sp"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#06B6D4"
+                    android:textAllCaps="false"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:layout_marginEnd="8dp"
+                    app:cornerRadius="4dp"
+                    app:elevation="2dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/logoutButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:text="Logout"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#EF4444"
+                    android:textAllCaps="false"
+                    android:textSize="13sp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    app:cornerRadius="4dp"
+                    app:elevation="2dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Main Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="16dp">
+
+            <!-- System Overview Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="System Overview"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#374151"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Statistics Cards - First Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <!-- Total Customers Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="12dp"
+                    app:cardElevation="2dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="@android:color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total Customers"
+                            android:textSize="13sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="8dp"/>
+
+                        <TextView
+                            android:id="@+id/totalCustomersText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="4"
+                            android:textSize="36sp"
+                            android:textStyle="bold"
+                            android:textColor="#3B82F6"/>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Total Accounts Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="12dp"
+                    app:cardElevation="2dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="@android:color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total Accounts"
+                            android:textSize="13sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="8dp"/>
+
+                        <TextView
+                            android:id="@+id/totalAccountsText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="4"
+                            android:textSize="36sp"
+                            android:textStyle="bold"
+                            android:textColor="#3B82F6"/>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Total Staff Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="12dp"
+                    app:cardElevation="2dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="@android:color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total Staff"
+                            android:textSize="13sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="8dp"/>
+
+                        <TextView
+                            android:id="@+id/totalStaffText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="4"
+                            android:textSize="36sp"
+                            android:textStyle="bold"
+                            android:textColor="#3B82F6"/>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Total Admins Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    app:cardElevation="2dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="@android:color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total Admins"
+                            android:textSize="13sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="8dp"/>
+
+                        <TextView
+                            android:id="@+id/totalAdminsText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2"
+                            android:textSize="36sp"
+                            android:textStyle="bold"
+                            android:textColor="#3B82F6"/>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- Statistics Cards - Second Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <!-- Today's Transactions Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="12dp"
+                    app:cardElevation="2dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="@android:color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Today's Transactions"
+                            android:textSize="13sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="8dp"/>
+
+                        <TextView
+                            android:id="@+id/todayTransactionsText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="36sp"
+                            android:textStyle="bold"
+                            android:textColor="#3B82F6"/>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Transaction Amount Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="12dp"
+                    app:cardElevation="2dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="@android:color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Transaction Amount"
+                            android:textSize="13sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="8dp"/>
+
+                        <TextView
+                            android:id="@+id/transactionAmountText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="৳ 0.00"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="#3B82F6"/>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Active Accounts Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="12dp"
+                    app:cardElevation="2dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="@android:color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Active Accounts"
+                            android:textSize="13sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="8dp"/>
+
+                        <TextView
+                            android:id="@+id/activeAccountsText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="4"
+                            android:textSize="36sp"
+                            android:textStyle="bold"
+                            android:textColor="#3B82F6"/>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Pending Approvals Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    app:cardElevation="2dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="@android:color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pending Approvals"
+                            android:textSize="13sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="8dp"/>
+
+                        <TextView
+                            android:id="@+id/pendingApprovalsText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="36sp"
+                            android:textStyle="bold"
+                            android:textColor="#3B82F6"/>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- Statistics Cards - Third Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="24dp">
+
+                <!-- Suspicious Activities Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="200dp"
+                    android:layout_height="100dp"
+                    app:cardElevation="2dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="@android:color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Suspicious Activities"
+                            android:textSize="13sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="8dp"/>
+
+                        <TextView
+                            android:id="@+id/suspiciousActivitiesText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="36sp"
+                            android:textStyle="bold"
+                            android:textColor="#3B82F6"/>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- Quick Actions Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quick Actions"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#374151"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Quick Actions - First Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/staffManagementButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="80dp"
+                    android:text="👔\nStaff\nManagement"
+                    android:textColor="#111827"
+                    android:backgroundTint="#D1D5DB"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:lineSpacingExtra="2dp"
+                    app:cornerRadius="6dp"
+                    app:elevation="2dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/customerOversightButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="80dp"
+                    android:text="👤\nCustomer\nOversight"
+                    android:textColor="#111827"
+                    android:backgroundTint="#D1D5DB"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:lineSpacingExtra="2dp"
+                    app:cornerRadius="6dp"
+                    app:elevation="2dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/transactionMonitoringButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="80dp"
+                    android:text="💰\nTransaction\nMonitoring"
+                    android:textColor="#111827"
+                    android:backgroundTint="#D1D5DB"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:lineSpacingExtra="2dp"
+                    app:cornerRadius="6dp"
+                    app:elevation="2dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/bankConfigurationButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="80dp"
+                    android:text="🏦\nBank\nConfiguration"
+                    android:textColor="#111827"
+                    android:backgroundTint="#D1D5DB"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:lineSpacingExtra="2dp"
+                    app:cornerRadius="6dp"
+                    app:elevation="2dp"/>
+
+            </LinearLayout>
+
+            <!-- Quick Actions - Second Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/reportsAnalyticsButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="80dp"
+                    android:text="📊\nReports &amp;\nAnalytics"
+                    android:textColor="#111827"
+                    android:backgroundTint="#D1D5DB"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:lineSpacingExtra="2dp"
+                    app:cornerRadius="6dp"
+                    app:elevation="2dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/auditLogsButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="80dp"
+                    android:text="📋\nAudit\nLogs"
+                    android:textColor="#111827"
+                    android:backgroundTint="#D1D5DB"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:lineSpacingExtra="2dp"
+                    app:cornerRadius="6dp"
+                    app:elevation="2dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/systemSettingsButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="80dp"
+                    android:text="⚙️\nSystem\nSettings"
+                    android:textColor="#111827"
+                    android:backgroundTint="#D1D5DB"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:lineSpacingExtra="2dp"
+                    app:cornerRadius="6dp"
+                    app:elevation="2dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/adminManagementButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="80dp"
+                    android:text="🔐\nAdmin\nManagement"
+                    android:textColor="#111827"
+                    android:backgroundTint="#D1D5DB"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:lineSpacingExtra="2dp"
+                    app:cornerRadius="6dp"
+                    app:elevation="2dp"/>
+
+            </LinearLayout>
+
+            <!-- Quick Actions - Third Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/chequeOversightButton"
+                    android:layout_width="250dp"
+                    android:layout_height="80dp"
+                    android:text="💳 Cheque Oversight"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#06B6D4"
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    app:cornerRadius="6dp"
+                    app:elevation="4dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
