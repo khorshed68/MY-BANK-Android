@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="?attr/selectableItemBackground"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/bookNumberText"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="BK1767365289409940"
+        android:textColor="#374151"
+        android:textSize="13sp"
+        android:padding="4dp" />
+
+    <TextView
+        android:id="@+id/accountText"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textColor="#374151"
+        android:textSize="13sp"
+        android:padding="4dp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/customerNameText"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="MD KHORSHED SHEIKH"
+        android:textColor="#374151"
+        android:textSize="13sp"
+        android:padding="4dp" />
+
+    <TextView
+        android:id="@+id/accountTypeText"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="SAVINGS"
+        android:textColor="#374151"
+        android:textSize="13sp"
+        android:padding="4dp" />
+
+    <TextView
+        android:id="@+id/balanceText"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="10300.0"
+        android:textColor="#374151"
+        android:textSize="13sp"
+        android:padding="4dp"
+        android:gravity="end" />
+
+    <TextView
+        android:id="@+id/leavesText"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="25"
+        android:textColor="#374151"
+        android:textSize="13sp"
+        android:padding="4dp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/requestDateText"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:text="2026-01-02 14:48:09.0"
+        android:textColor="#6B7280"
+        android:textSize="13sp"
+        android:padding="4dp" />
+
+</LinearLayout>

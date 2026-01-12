@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:background="@android:color/white"
+    android:layout_marginBottom="1dp">
+
+    <TextView
+        android:id="@+id/timestampText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.2"
+        android:text="2026-01-09 16:50:32"
+        android:textColor="#212121"
+        android:textSize="11sp"
+        android:paddingEnd="4dp"/>
+
+    <TextView
+        android:id="@+id/userTypeText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        android:text="ADMIN"
+        android:textColor="#673AB7"
+        android:textStyle="bold"
+        android:textSize="11sp"
+        android:paddingEnd="4dp"/>
+
+    <TextView
+        android:id="@+id/usernameText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="KHORSHEDSH..."
+        android:textColor="#212121"
+        android:textSize="11sp"
+        android:paddingEnd="4dp"
+        android:ellipsize="end"
+        android:maxLines="1"/>
+
+    <TextView
+        android:id="@+id/actionText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        android:text="LOGIN"
+        android:textColor="#1976D2"
+        android:textSize="11sp"
+        android:paddingEnd="4dp"/>
+
+    <TextView
+        android:id="@+id/moduleText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        android:text="ADMIN"
+        android:textColor="#424242"
+        android:textSize="11sp"
+        android:paddingEnd="4dp"/>
+
+    <TextView
+        android:id="@+id/detailsText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:text="Successful login"
+        android:textColor="#616161"
+        android:textSize="11sp"
+        android:paddingEnd="4dp"
+        android:ellipsize="end"
+        android:maxLines="1"/>
+
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        android:text="SUCCESS"
+        android:textColor="#4CAF50"
+        android:textStyle="bold"
+        android:textSize="11sp"/>
+
+</LinearLayout>

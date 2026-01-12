@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    
+    <!-- Background Circle -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M60,10 A50,50 0 1,1 60,110 A50,50 0 1,1 60,10 Z"/>
+    
+    <!-- Bank Building Icon -->
+    <!-- Roof/Triangle -->
+    <path
+        android:fillColor="#6366F1"
+        android:pathData="M35,50L60,35L85,50L85,55L35,55Z"/>
+    
+    <!-- Main Building Body -->
+    <path
+        android:fillColor="#6366F1"
+        android:pathData="M38,55L82,55L82,90L38,90Z"/>
+    
+    <!-- Columns (white) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M43,58L47,58L47,87L43,87Z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M51,58L55,58L55,87L51,87Z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M59,58L63,58L63,87L59,87Z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M67,58L71,58L71,87L67,87Z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M75,58L79,58L79,87L75,87Z"/>
+    
+    <!-- Base/Foundation -->
+    <path
+        android:fillColor="#4F46E5"
+        android:pathData="M32,90L88,90L88,95L32,95Z"/>
+</vector>

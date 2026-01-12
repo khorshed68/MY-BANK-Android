@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@android:color/white"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/accountNumberText"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textColor="#333333"
+        android:textSize="12sp"
+        android:padding="4dp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/customerNameText"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Customer Name"
+        android:textColor="#333333"
+        android:textSize="12sp"
+        android:padding="4dp"
+        android:ellipsize="end"
+        android:maxLines="1" />
+
+    <TextView
+        android:id="@+id/emailText"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="email@example.com"
+        android:textColor="#333333"
+        android:textSize="12sp"
+        android:padding="4dp"
+        android:ellipsize="end"
+        android:maxLines="1" />
+
+    <TextView
+        android:id="@+id/phoneText"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="01234567890"
+        android:textColor="#333333"
+        android:textSize="12sp"
+        android:padding="4dp" />
+
+    <TextView
+        android:id="@+id/accountTypeText"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="SAVINGS"
+        android:textColor="#333333"
+        android:textSize="12sp"
+        android:padding="4dp" />
+
+    <TextView
+        android:id="@+id/balanceText"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="৳10000.00"
+        android:textColor="#333333"
+        android:textSize="12sp"
+        android:padding="4dp"
+        android:gravity="end" />
+
+    <TextView
+        android:id="@+id/statusBadge"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="ACTIVE"
+        android:textColor="@android:color/white"
+        android:textSize="11sp"
+        android:padding="6dp"
+        android:gravity="center"
+        android:background="#4CAF50"
+        android:layout_margin="4dp" />
+
+    <TextView
+        android:id="@+id/createdDateText"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="2026-01-02 14:30"
+        android:textColor="#666666"
+        android:textSize="12sp"
+        android:padding="4dp" />
+
+</LinearLayout>

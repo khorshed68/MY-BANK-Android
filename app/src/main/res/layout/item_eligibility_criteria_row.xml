@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="48dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp">
+
+    <TextView
+        android:id="@+id/accountTypeText"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="CURRENT"
+        android:textSize="14sp"
+        android:textColor="#424242"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:gravity="start" />
+
+    <TextView
+        android:id="@+id/minBalanceText"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="5000.0"
+        android:textSize="14sp"
+        android:textColor="#424242"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:gravity="end" />
+
+    <TextView
+        android:id="@+id/minAgeDaysText"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textSize="14sp"
+        android:textColor="#424242"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/maxBooksText"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="4"
+        android:textSize="14sp"
+        android:textColor="#424242"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/leavesPerBookText"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="50"
+        android:textSize="14sp"
+        android:textColor="#424242"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/activeText"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="true"
+        android:textSize="14sp"
+        android:textColor="#4CAF50"
+        android:textStyle="bold"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:gravity="center" />
+</LinearLayout>

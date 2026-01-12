@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "859465297618",
+    "project_id": "my-bank-e08a3",
+    "storage_bucket": "my-bank-e08a3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859465297618:android:227ebfb94978a6317dc70b",
+        "android_client_info": {
+          "package_name": "com.khorshed.mybank"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1ZKd6foN6GHARGZkpZpDHQAWfxQYFniE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

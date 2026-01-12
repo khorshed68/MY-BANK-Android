@@ -1,0 +1,39 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Bank Building Icon - Centered and Scaled for Launcher -->
+    <!-- Roof/Triangle -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,48L54,28L84,48L84,54L24,54Z"/>
+    
+    <!-- Main Building Body -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M28,54L80,54L80,84L28,84Z"/>
+    
+    <!-- Columns (Primary Blue) -->
+    <path
+        android:fillColor="#2563EB"
+        android:pathData="M34,58L40,58L40,80L34,80Z"/>
+    <path
+        android:fillColor="#2563EB"
+        android:pathData="M44,58L50,58L50,80L44,80Z"/>
+    <path
+        android:fillColor="#2563EB"
+        android:pathData="M54,58L60,58L60,80L54,80Z"/>
+    <path
+        android:fillColor="#2563EB"
+        android:pathData="M64,58L70,58L70,80L64,80Z"/>
+    <path
+        android:fillColor="#2563EB"
+        android:pathData="M74,58L80,58L80,80L74,80Z"/>
+    
+    <!-- Base/Foundation -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M20,84L88,84L88,90L20,90Z"/>
+</vector>

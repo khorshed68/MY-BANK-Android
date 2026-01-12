@@ -1,0 +1,42 @@
+rules_version = '2';
+
+// Firebase Storage Security Rules for MY BANK App
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Allow anyone to upload customer profile images during registration
+    match /customer_profile_images/{imageId} {
+      allow read: if true;
+      allow write: if request.resource.size < 1 * 1024 * 1024 // 1MB limit
+                   && request.resource.contentType.matches('image/.*');
+    }
+    
+    // Allow authenticated users to upload/read their own profile images
+    match /profile_images/{userId}/{imageId} {
+      allow read: if true;
+      allow write: if request.auth != null 
+                   && request.auth.uid == userId
+                   && request.resource.size < 1 * 1024 * 1024 // 1MB limit
+                   && request.resource.contentType.matches('image/.*');
+    }
+    
+    // Admin profile images (for admin registration)
+    match /admin_profile_images/{imageId} {
+      allow read: if true;
+      allow write: if request.resource.size < 1 * 1024 * 1024 // 1MB limit
+                   && request.resource.contentType.matches('image/.*');
+    }
+    
+    // Staff profile images (for staff registration)
+    match /staff_profile_images/{imageId} {
+      allow read: if true;
+      allow write: if request.resource.size < 1 * 1024 * 1024 // 1MB limit
+                   && request.resource.contentType.matches('image/.*');
+    }
+    
+    // Default: deny all other access
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

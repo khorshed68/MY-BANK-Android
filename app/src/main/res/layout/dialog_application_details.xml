@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Application Details"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Name -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Full Name"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:layout_marginTop="8dp"/>
+        
+        <TextView
+            android:id="@+id/tvDetailName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="John Doe"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:textStyle="bold"/>
+
+        <!-- Email -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:layout_marginTop="12dp"/>
+        
+        <TextView
+            android:id="@+id/tvDetailEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="john@example.com"
+            android:textSize="14sp"
+            android:textColor="#333333"/>
+
+        <!-- Phone -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Phone"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:layout_marginTop="12dp"/>
+        
+        <TextView
+            android:id="@+id/tvDetailPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="+880 1234567890"
+            android:textSize="14sp"
+            android:textColor="#333333"/>
+
+        <!-- Address -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Address"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:layout_marginTop="12dp"/>
+        
+        <TextView
+            android:id="@+id/tvDetailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="123 Main St, Dhaka"
+            android:textSize="14sp"
+            android:textColor="#333333"/>
+
+        <!-- Identity Type -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Identity Document Type"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:layout_marginTop="12dp"/>
+        
+        <TextView
+            android:id="@+id/tvDetailIdentityType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="NID"
+            android:textSize="14sp"
+            android:textColor="#333333"/>
+
+        <!-- Identity Number -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Identity Number"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:layout_marginTop="12dp"/>
+        
+        <TextView
+            android:id="@+id/tvDetailIdentityNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1234567890123"
+            android:textSize="14sp"
+            android:textColor="#333333"/>
+
+        <!-- Account Type -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Account Type"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:layout_marginTop="12dp"/>
+        
+        <TextView
+            android:id="@+id/tvDetailAccountType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SAVINGS"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:textStyle="bold"/>
+
+        <!-- Initial Deposit -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Initial Deposit"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:layout_marginTop="12dp"/>
+        
+        <TextView
+            android:id="@+id/tvDetailInitialDeposit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="৳ 5,000.00"
+            android:textSize="16sp"
+            android:textColor="#4CAF50"
+            android:textStyle="bold"/>
+
+        <!-- Status -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:layout_marginTop="12dp"/>
+        
+        <TextView
+            android:id="@+id/tvDetailStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PENDING"
+            android:textSize="14sp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/status_pending_bg"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"/>
+
+        <!-- Reviewed By (conditional) -->
+        <TextView
+            android:id="@+id/tvDetailReviewedBy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reviewed by: Staff Name"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"/>
+
+        <!-- Rejection Reason (conditional) -->
+        <TextView
+            android:id="@+id/tvDetailRejectionReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reason: Incomplete documents"
+            android:textSize="12sp"
+            android:textColor="#F44336"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+</ScrollView>

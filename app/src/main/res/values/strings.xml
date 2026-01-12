@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">MY BANK</string>
+    
+    <!-- Authentication -->
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="name">Full Name</string>
+    <string name="phone">Phone Number</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="login_with_biometric">Login with Biometric</string>
+    <string name="dont_have_account">Don\'t have an account? Register</string>
+    <string name="already_have_account">Already have an account? Login</string>
+    
+    <!-- Customer -->
+    <string name="deposit">Deposit</string>
+    <string name="withdraw">Withdraw</string>
+    <string name="transfer">Transfer</string>
+    <string name="transactions">Transactions</string>
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+    <string name="account_number">Account Number</string>
+    <string name="balance">Balance</string>
+    <string name="amount">Amount</string>
+    <string name="description">Description</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    
+    <!-- Staff -->
+    <string name="search_customers">Search Customers</string>
+    <string name="process_deposit">Process Deposit</string>
+    <string name="process_withdrawal">Process Withdrawal</string>
+    <string name="reports">Reports</string>
+    
+    <!-- Admin -->
+    <string name="manage_users">Manage Users</string>
+    <string name="manage_accounts">Manage Accounts</string>
+    <string name="audit_logs">Audit Logs</string>
+    <string name="system_statistics">System Statistics</string>
+    <string name="create_user">Create User</string>
+    <string name="total_users">Total Users</string>
+    <string name="total_accounts">Total Accounts</string>
+    <string name="total_money">Total Money</string>
+    <string name="total_transactions">Total Transactions</string>
+    <string name="today_transactions">Today\'s Transactions</string>
+    <string name="active_users">Active Users</string>
+    
+    <!-- Common -->
+    <string name="logout">Logout</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="search">Search</string>
+    <string name="export">Export</string>
+    <string name="loading">Loading…</string>
+    <string name="welcome">Welcome</string>
+</resources>
