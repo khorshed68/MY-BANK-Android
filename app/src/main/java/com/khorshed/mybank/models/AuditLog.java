@@ -1,5 +1,6 @@
 package com.khorshed.mybank.models;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.ServerTimestamp;
 
@@ -7,10 +8,19 @@ import java.util.Date;
 
 public class AuditLog {
     @DocumentId
-    private String logId;
+    private String id;
+    private String logId; // Legacy field
+    private Timestamp timestamp;
+    private String userType;
+    private String username;
+    private String action;
+    private String module;
+    private String details;
+    private String status;
     private String userId;
+    
+    // Legacy fields
     private String userName;
-    private String action; // USER_CREATED, USER_UPDATED, USER_DELETED, ACCOUNT_FROZEN, etc.
     private String targetUserId;
     private String targetUserName;
     private String description;
@@ -22,18 +32,76 @@ public class AuditLog {
         // Required empty constructor for Firestore
     }
 
-    public AuditLog(String logId, String userId, String userName, String action, 
-                   String targetUserId, String targetUserName, String description) {
-        this.logId = logId;
-        this.userId = userId;
-        this.userName = userName;
+    public AuditLog(String id, Timestamp timestamp, String userType, String username, 
+                   String action, String module, String details, String status, String userId) {
+        this.id = id;
+        this.timestamp = timestamp;
+        this.userType = userType;
+        this.username = username;
         this.action = action;
-        this.targetUserId = targetUserId;
-        this.targetUserName = targetUserName;
-        this.description = description;
+        this.module = module;
+        this.details = details;
+        this.status = status;
+        this.userId = userId;
     }
 
     // Getters and Setters
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getLogId() {
         return logId;
     }

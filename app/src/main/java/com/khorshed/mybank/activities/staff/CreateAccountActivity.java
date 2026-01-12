@@ -22,12 +22,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.khorshed.mybank.R;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import com.khorshed.mybank.models.AccountApplication;
 
 import java.util.Date;
@@ -45,7 +49,8 @@ public class CreateAccountActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
     private Uri selectedImageUri;
-    private String uploadedImageUrl;
+    private Bitmap selectedImageBitmap;
+    private String base64ProfileImage;
 
     private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -53,12 +58,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     selectedImageUri = result.getData().getData();
                     if (selectedImageUri != null) {
-                        Glide.with(this)
-                                .load(selectedImageUri)
-                                .circleCrop()
-                                .placeholder(R.drawable.ic_person)
-                                .into(profileImageView);
-                        Toast.makeText(this, "Image selected successfully", Toast.LENGTH_SHORT).show();
+                        loadImageFromUri();
                     }
                 }
             }
@@ -123,8 +123,8 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     private void setupClickListeners() {
         submitButton.setOnClickListener(v -> {
-            if (selectedImageUri != null) {
-                uploadImageThenSubmit();
+            if (selectedImageBitmap != null) {
+                convertImageToBase64ThenSubmit();
             } else {
                 submitApplication();
             }
@@ -153,29 +153,78 @@ public class CreateAccountActivity extends AppCompatActivity {
         imagePickerLauncher.launch(intent);
     }
 
-    private void uploadImageThenSubmit() {
+    /**
+     * Load image from URI and convert to Bitmap
+     */
+    private void loadImageFromUri() {
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
+            if (inputStream != null) {
+                selectedImageBitmap = BitmapFactory.decodeStream(inputStream);
+                inputStream.close();
+                
+                if (selectedImageBitmap != null) {
+                    Glide.with(this)
+                        .load(selectedImageBitmap)
+                        .circleCrop()
+                        .placeholder(R.drawable.ic_person)
+                        .into(profileImageView);
+                    Toast.makeText(this, "✅ Image selected", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Error loading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            selectedImageBitmap = null;
+        }
+    }
+    
+    /**
+     * Convert image to Base64 before submission (runs in background)
+     */
+    private void convertImageToBase64ThenSubmit() {
         progressBar.setVisibility(View.VISIBLE);
         submitButton.setEnabled(false);
-
-        String fileName = "customer_profile_images/" + UUID.randomUUID().toString() + ".jpg";
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(fileName);
-
-        storageRef.putFile(selectedImageUri)
-                .addOnSuccessListener(taskSnapshot -> {
-                    storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        uploadedImageUrl = uri.toString();
-                        submitApplication();
-                    }).addOnFailureListener(e -> {
-                        Toast.makeText(this, "Image uploaded but URL failed. Submitting without image.",
-                                Toast.LENGTH_SHORT).show();
-                        submitApplication();
-                    });
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Image upload failed. Submitting without profile picture.",
-                            Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Processing image...", Toast.LENGTH_SHORT).show();
+        
+        new Thread(() -> {
+            try {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                int quality = 75;
+                selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                byte[] imageBytes = baos.toByteArray();
+                
+                // Reduce quality if too large
+                while (imageBytes.length > 400 * 1024 && quality > 30) {
+                    baos.reset();
+                    quality -= 10;
+                    selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                    imageBytes = baos.toByteArray();
+                }
+                
+                base64ProfileImage = android.util.Base64.encodeToString(imageBytes, android.util.Base64.DEFAULT);
+                
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "✅ Image processed", Toast.LENGTH_SHORT).show();
                     submitApplication();
                 });
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    progressBar.setVisibility(View.GONE);
+                    submitButton.setEnabled(true);
+                    new AlertDialog.Builder(this)
+                        .setTitle("Error")
+                        .setMessage("Failed to process image. Continue without image?")
+                        .setPositiveButton("Continue", (d, w) -> {
+                            base64ProfileImage = null;
+                            submitApplication();
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+                });
+            }
+        }).start();
     }
 
     private void submitApplication() {
@@ -229,8 +278,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         userData.put("notificationsEnabled", true);
         userData.put("createdAt", new Date());
 
-        if (uploadedImageUrl != null) {
-            userData.put("profileImageUrl", uploadedImageUrl);
+        if (base64ProfileImage != null && !base64ProfileImage.isEmpty()) {
+            userData.put("profileImageUrl", base64ProfileImage);
         }
 
         db.collection("users")
@@ -266,6 +315,11 @@ public class CreateAccountActivity extends AppCompatActivity {
         application.setInitialDeposit(initialDeposit);
         application.setStatus("PENDING");
         application.setSubmittedAt(new Date());
+        
+        // Set Base64 encoded profile image if available
+        if (base64ProfileImage != null && !base64ProfileImage.isEmpty()) {
+            application.setProfileImageUrl(base64ProfileImage);
+        }
 
         db.collection("account_applications")
                 .document(applicationId)

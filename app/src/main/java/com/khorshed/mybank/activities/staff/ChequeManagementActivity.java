@@ -27,6 +27,7 @@ import com.khorshed.mybank.models.ChequeBookRequest;
 import com.khorshed.mybank.models.ChequeBook;
 import com.khorshed.mybank.models.Cheque;
 import com.khorshed.mybank.models.DepositedCheque;
+import com.khorshed.mybank.services.EmailService;
 
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
@@ -405,6 +406,27 @@ public class ChequeManagementActivity extends AppCompatActivity
                     request.getAccountNumber(), 
                     "Approved cheque book request for " + request.getCustomerName() + 
                     " with " + request.getNumberOfLeaves() + " leaves");
+                
+                // Send email notification for cheque book approval
+                db.collection("users").document(request.getUserId())
+                    .get()
+                    .addOnSuccessListener(userDoc -> {
+                        String userEmail = userDoc.getString("email");
+                        if (userEmail != null && !userEmail.isEmpty()) {
+                            EmailService.EmailData emailData = new EmailService.EmailData.Builder()
+                                    .customerName(request.getCustomerName())
+                                    .accountNumber(request.getAccountNumber())
+                                    .chequeBookNumber(chequeBookNumber)
+                                    .numberOfLeaves(request.getNumberOfLeaves())
+                                    .startingChequeNumber(String.valueOf(startChequeNumber))
+                                    .endingChequeNumber(String.valueOf(endChequeNumber))
+                                    .issuedBy(staffName)
+                                    .timestamp(new java.text.SimpleDateFormat("dd MMM yyyy, hh:mm a", java.util.Locale.getDefault()).format(new java.util.Date()))
+                                    .build();
+                            
+                            EmailService.sendEmail(userEmail, EmailService.NotificationType.CHEQUE_APPROVED, emailData);
+                        }
+                    });
                 
                 showLoading(false);
                 

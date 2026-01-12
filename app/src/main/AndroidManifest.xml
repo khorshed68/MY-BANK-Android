@@ -93,15 +93,35 @@
         <!-- Admin Activities -->
         <activity android:name=".activities.admin.AdminDashboardActivity" 
             android:exported="false" />
+        <activity android:name=".activities.admin.StaffManagementActivity" 
+            android:exported="false" />
+        <activity android:name=".CustomerOversightActivity" 
+            android:exported="false" />
+        <activity android:name=".TransactionMonitoringActivity" 
+            android:exported="false" />
+        <activity android:name=".BankConfigurationActivity" 
+            android:exported="false" />
+        <activity android:name=".ReportsAnalyticsActivity" 
+            android:exported="false" />
+        <activity android:name=".SystemSettingsActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.admin.CreateStaffActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.admin.StaffActivityLogActivity" 
+            android:exported="false" />
         <activity android:name=".activities.admin.ManageUsersActivity" 
             android:exported="false" />
         <activity android:name=".activities.admin.CreateUserActivity" 
             android:exported="false" />
         <activity android:name=".activities.admin.ManageAccountsActivity" 
             android:exported="false" />
-        <activity android:name=".activities.admin.AuditLogsActivity" 
+        <activity android:name=".AuditLogsActivity" 
             android:exported="false" />
         <activity android:name=".activities.admin.AdminReportsActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.admin.AdminManagementActivity" 
+            android:exported="false" />
+        <activity android:name=".activities.admin.ChequeOversightActivity" 
             android:exported="false" />
 
         <!-- Main Activity (legacy, can be removed) -->

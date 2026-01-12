@@ -1,6 +1,7 @@
 package com.khorshed.mybank.activities.customer;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,9 +13,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.khorshed.mybank.R;
 import com.khorshed.mybank.activities.LoginActivity;
+import com.khorshed.mybank.services.EmailService;
 import com.khorshed.mybank.utils.FormatUtils;
+import com.khorshed.mybank.utils.ImageUtils;
 import com.khorshed.mybank.viewmodel.AuthViewModel;
 import com.khorshed.mybank.viewmodel.CustomerViewModel;
 
@@ -229,6 +235,27 @@ public class CustomerDashboardActivity extends AppCompatActivity {
         
         if (logoutButton != null) {
             logoutButton.setOnClickListener(v -> {
+                // Send logout email notification before actually logging out
+                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                if (firebaseUser != null && firebaseUser.getEmail() != null) {
+                    // Fetch current user and account data for email
+                    customerViewModel.getCurrentUser().observe(this, user -> {
+                        if (user != null) {
+                            customerViewModel.getCurrentAccount().observe(this, account -> {
+                                if (account != null) {
+                                    EmailService.EmailData emailData = new EmailService.EmailData.Builder()
+                                            .customerName(user.getName())
+                                            .accountNumber(account.getAccountNumber())
+                                            .timestamp(new java.text.SimpleDateFormat("dd MMM yyyy, hh:mm a", java.util.Locale.getDefault()).format(new java.util.Date()))
+                                            .build();
+                                    
+                                    EmailService.sendEmail(firebaseUser.getEmail(), EmailService.NotificationType.LOGOUT, emailData);
+                                }
+                            });
+                        }
+                    });
+                }
+                
                 authViewModel.logout();
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
@@ -321,38 +348,79 @@ public class CustomerDashboardActivity extends AppCompatActivity {
     private void loadProfilePicture(String userId) {
         if (userId == null) return;
         
-        com.google.firebase.storage.StorageReference storageRef = com.google.firebase.storage.FirebaseStorage.getInstance()
-            .getReference()
-            .child("profile_pictures/" + userId + ".jpg");
-        
-        storageRef.getDownloadUrl()
-            .addOnSuccessListener(uri -> {
-                Glide.with(this)
-                    .load(uri)
-                    .circleCrop()
-                    .placeholder(R.drawable.ic_person)
-                    .error(R.drawable.ic_person)
-                    .into(profileImageView);
+        // Load profile picture from Firestore (Base64 encoded)
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users")
+            .document(userId)
+            .get()
+            .addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    // Load Base64 encoded image from profileImageUrl field
+                    String base64Image = documentSnapshot.getString("profileImageUrl");
+                    
+                    if (base64Image != null && !base64Image.isEmpty() && 
+                        !base64Image.equals("default") &&
+                        (base64Image.startsWith("data:image") || base64Image.length() > 100)) {
+                        
+                        try {
+                            // Remove data URI prefix if present
+                            String cleanBase64 = base64Image;
+                            if (base64Image.startsWith("data:image")) {
+                                cleanBase64 = base64Image.substring(base64Image.indexOf(",") + 1);
+                            }
+                            
+                            // Decode Base64 string to byte array
+                            byte[] imageBytes = android.util.Base64.decode(cleanBase64, android.util.Base64.DEFAULT);
+                            
+                            // Convert byte array to Bitmap
+                            Bitmap bitmap = android.graphics.BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                            
+                            if (bitmap != null) {
+                                // Display profile picture with circular crop using Glide
+                                Glide.with(this)
+                                    .load(bitmap)
+                                    .circleCrop()
+                                    .placeholder(R.drawable.ic_person)
+                                    .into(profileImageView);
+                                android.util.Log.d("CustomerDashboard", "✅ Base64 image loaded successfully");
+                                return;
+                            }
+                        } catch (Exception e) {
+                            android.util.Log.e("CustomerDashboard", "❌ Error decoding Base64 image", e);
+                        }
+                    }
+                    
+                    // No valid profile picture - use default
+                    Glide.with(this)
+                        .load(R.drawable.ic_person)
+                        .circleCrop()
+                        .into(profileImageView);
+                } else {
+                    // Document doesn't exist - use default
+                    Glide.with(this)
+                        .load(R.drawable.ic_person)
+                        .circleCrop()
+                        .into(profileImageView);
+                }
             })
             .addOnFailureListener(e -> {
-                // If no profile picture exists, try loading from customer_profile_images
-                com.google.firebase.storage.StorageReference customerRef = com.google.firebase.storage.FirebaseStorage.getInstance()
-                    .getReference()
-                    .child("customer_profile_images/" + userId + ".jpg");
-                
-                customerRef.getDownloadUrl()
-                    .addOnSuccessListener(uri -> {
-                        Glide.with(this)
-                            .load(uri)
-                            .circleCrop()
-                            .placeholder(R.drawable.ic_person)
-                            .error(R.drawable.ic_person)
-                            .into(profileImageView);
-                    })
-                    .addOnFailureListener(e2 -> {
-                        // Use default icon if no picture exists
-                        profileImageView.setImageResource(R.drawable.ic_person);
-                    });
+                // Loading failed - use default icon
+                Glide.with(this)
+                    .load(R.drawable.ic_person)
+                    .circleCrop()
+                    .into(profileImageView);
+                android.util.Log.e("CustomerDashboard", "Failed to load profile data", e);
             });
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reload profile picture when returning to dashboard (e.g., after updating in ProfileActivity)
+        customerViewModel.getCurrentUser().observe(this, user -> {
+            if (user != null) {
+                loadProfilePicture(user.getUserId());
+            }
+        });
     }
 }

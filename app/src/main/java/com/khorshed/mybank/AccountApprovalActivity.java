@@ -28,6 +28,7 @@ import com.khorshed.mybank.models.AccountApplication;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.khorshed.mybank.services.EmailService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -370,7 +371,7 @@ public class AccountApprovalActivity extends AppCompatActivity
     }
     
     private void sendApprovalEmail(AccountApplication application, String accountNumber) {
-        // Prepare email content
+        // Prepare email content using EmailService
         String subject = "Account Approved - " + application.getName();
         String body = buildApprovalEmailBody(application, accountNumber);
         
@@ -385,26 +386,38 @@ public class AccountApprovalActivity extends AppCompatActivity
         Log.d("EMAIL_NOTIFICATION", body);
         Log.d("EMAIL_NOTIFICATION", "========================================");
         
+        // Send real-time email using EmailService
+        EmailService.EmailData emailData = new EmailService.EmailData.Builder()
+                .customerName(application.getName())
+                .accountNumber(accountNumber)
+                .phoneNumber(application.getPhone())
+                .accountType(application.getAccountType())
+                .amount(application.getInitialDeposit())
+                .timestamp(new java.text.SimpleDateFormat("dd MMM yyyy, hh:mm a", java.util.Locale.getDefault()).format(new Date()))
+                .build();
+        
+        EmailService.sendEmail(application.getEmail(), EmailService.NotificationType.ACCOUNT_APPROVED, emailData);
+        
         // Also store in Firestore for backend processing (optional)
-        Map<String, Object> emailData = new HashMap<>();
-        emailData.put("to", application.getEmail());
-        emailData.put("subject", subject);
-        emailData.put("body", body);
-        emailData.put("sentAt", new Date());
+        Map<String, Object> emailRecord = new HashMap<>();
+        emailRecord.put("to", application.getEmail());
+        emailRecord.put("subject", subject);
+        emailRecord.put("body", body);
+        emailRecord.put("sentAt", new Date());
         
         db.collection("mail")
-                .add(emailData)
+                .add(emailRecord)
                 .addOnSuccessListener(documentReference -> {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(this, 
-                            "Application approved! Account created and email printed to console.",
+                            "✅ Application approved! Account created and email sent to customer.",
                             Toast.LENGTH_LONG).show();
                     loadApplications();
                 })
                 .addOnFailureListener(e -> {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(this, 
-                            "Account created and email printed to console!",
+                            "Account created! Email notification sent.",
                             Toast.LENGTH_LONG).show();
                     loadApplications();
                 });

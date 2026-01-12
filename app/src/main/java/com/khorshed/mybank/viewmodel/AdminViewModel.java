@@ -244,15 +244,19 @@ public class AdminViewModel extends ViewModel {
         userRepository.getUserById(currentUserId).observeForever(currentUser -> {
             String currentUserName = currentUser != null ? currentUser.getName() : "System";
             
-            AuditLog log = new AuditLog(
-                null, 
-                currentUserId, 
-                currentUserName, 
-                action, 
-                targetUserId, 
-                targetUserName, 
-                description
-            );
+            AuditLog log = new AuditLog();
+            log.setUserId(currentUserId);
+            log.setUserName(currentUserName);
+            log.setUsername(currentUserName);
+            log.setAction(action);
+            log.setTargetUserId(targetUserId);
+            log.setTargetUserName(targetUserName);
+            log.setDescription(description);
+            log.setDetails(description);
+            log.setUserType("ADMIN");
+            log.setModule("ADMIN");
+            log.setStatus("SUCCESS");
+            log.setTimestamp(com.google.firebase.Timestamp.now());
             
             auditLogRepository.createAuditLog(log, new AuditLogRepository.OnCompleteListener() {
                 @Override

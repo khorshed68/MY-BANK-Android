@@ -5,12 +5,14 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.khorshed.mybank.models.Account;
 import com.khorshed.mybank.models.Transaction;
 import com.khorshed.mybank.models.User;
 import com.khorshed.mybank.repository.AccountRepository;
 import com.khorshed.mybank.repository.TransactionRepository;
 import com.khorshed.mybank.repository.UserRepository;
+import com.khorshed.mybank.utils.EmailNotificationHelper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +64,7 @@ public class CustomerViewModel extends ViewModel {
         }
 
         isLoading.setValue(true);
+        double previousBalance = account.getBalance();
         double newBalance = account.getBalance() + amount;
         
         Transaction transaction = new Transaction(
@@ -81,6 +84,11 @@ public class CustomerViewModel extends ViewModel {
                     new AccountRepository.OnCompleteListener() {
                         @Override
                         public void onSuccess() {
+                            // Send email notification for deposit
+                            EmailNotificationHelper.sendTransactionEmailWithUserInfo(
+                                    "DEPOSIT", account.getAccountId(), amount, 
+                                    previousBalance, newBalance, transactionId, description, null, null);
+                            
                             isLoading.setValue(false);
                             operationSuccess.setValue(true);
                         }
@@ -113,6 +121,7 @@ public class CustomerViewModel extends ViewModel {
         }
 
         isLoading.setValue(true);
+        double previousBalance = account.getBalance();
         double newBalance = account.getBalance() - amount;
         
         Transaction transaction = new Transaction(
@@ -132,6 +141,11 @@ public class CustomerViewModel extends ViewModel {
                     new AccountRepository.OnCompleteListener() {
                         @Override
                         public void onSuccess() {
+                            // Send email notification for withdrawal
+                            EmailNotificationHelper.sendTransactionEmailWithUserInfo(
+                                    "WITHDRAWAL", account.getAccountId(), amount, 
+                                    previousBalance, newBalance, transactionId, description, null, null);
+                            
                             isLoading.setValue(false);
                             operationSuccess.setValue(true);
                         }
@@ -164,6 +178,7 @@ public class CustomerViewModel extends ViewModel {
         }
 
         isLoading.setValue(true);
+        double previousBalance = fromAccount.getBalance();
         
         // First, get the recipient account
         accountRepository.getAccountByAccountNumber(toAccountNumber).observeForever(toAccount -> {
@@ -206,6 +221,23 @@ public class CustomerViewModel extends ViewModel {
                                     new AccountRepository.OnCompleteListener() {
                                         @Override
                                         public void onSuccess() {
+                                            // Get beneficiary name and send email notification
+                                            FirebaseFirestore.getInstance()
+                                                    .collection("users")
+                                                    .whereEqualTo("userId", toAccount.getUserId())
+                                                    .get()
+                                                    .addOnSuccessListener(querySnapshot -> {
+                                                        String beneficiaryName = "Unknown";
+                                                        if (!querySnapshot.isEmpty()) {
+                                                            beneficiaryName = querySnapshot.getDocuments().get(0).getString("name");
+                                                        }
+                                                        // Send email notification for transfer
+                                                        EmailNotificationHelper.sendTransactionEmailWithUserInfo(
+                                                                "TRANSFER", fromAccount.getAccountId(), amount,
+                                                                previousBalance, newFromBalance, transactionId,
+                                                                description, toAccountNumber, beneficiaryName);
+                                                    });
+                                            
                                             isLoading.setValue(false);
                                             operationSuccess.setValue(true);
                                         }

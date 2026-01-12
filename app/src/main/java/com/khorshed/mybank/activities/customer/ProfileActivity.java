@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,8 +27,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.khorshed.mybank.R;
 import com.khorshed.mybank.viewmodel.AuthViewModel;
 import com.khorshed.mybank.viewmodel.CustomerViewModel;
@@ -242,15 +242,16 @@ public class ProfileActivity extends AppCompatActivity {
             InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
             selectedImageBitmap = BitmapFactory.decodeStream(inputStream);
             
-            // Check file size (limit to 2MB)
+            // Compress and check file size (limit to 500KB for Base64 storage)
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
             
             float sizeMB = data.length / (1024f * 1024f);
             
-            if (data.length > 2 * 1024 * 1024) {
-                Toast.makeText(this, String.format("❌ Image size (%.2f MB) exceeds 2 MB limit", sizeMB), Toast.LENGTH_LONG).show();
+            // For Base64 storage, recommend smaller size (500KB)
+            if (data.length > 500 * 1024) {
+                Toast.makeText(this, String.format("❌ Image size (%.2f MB) exceeds 500 KB limit for database storage", sizeMB), Toast.LENGTH_LONG).show();
                 resetImagePreview();
                 return;
             }
@@ -278,26 +279,26 @@ public class ProfileActivity extends AppCompatActivity {
             return;
         }
         
-        progressDialog.setMessage("Uploading profile picture...");
+        progressDialog.setMessage("Converting image...");
         progressDialog.show();
         
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference()
-            .child("profile_pictures/" + user.getUid() + ".jpg");
+        // Convert Bitmap to Base64 String
+        String base64Image = convertBitmapToBase64(selectedImageBitmap);
         
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos);
-        byte[] data = baos.toByteArray();
+        if (base64Image == null) {
+            progressDialog.dismiss();
+            Toast.makeText(this, "❌ Failed to convert image", Toast.LENGTH_SHORT).show();
+            return;
+        }
         
-        // Show upload size
-        float sizeMB = data.length / (1024f * 1024f);
-        progressDialog.setMessage(String.format("Uploading %.2f MB...", sizeMB));
+        progressDialog.setMessage("Uploading to database...");
         
-        storageRef.putBytes(data)
-            .addOnProgressListener(snapshot -> {
-                double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
-                progressDialog.setMessage(String.format("Uploading: %.0f%%", progress));
-            })
-            .addOnSuccessListener(taskSnapshot -> {
+        // Store Base64 string in Firestore (using profileImageUrl field for consistency)
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users")
+            .document(user.getUid())
+            .update("profileImageUrl", base64Image)
+            .addOnSuccessListener(aVoid -> {
                 progressDialog.dismiss();
                 Toast.makeText(this, "✅ Profile picture updated successfully!", Toast.LENGTH_SHORT).show();
                 ivCurrentPicture.setImageBitmap(selectedImageBitmap);
@@ -307,6 +308,44 @@ public class ProfileActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 Toast.makeText(this, "❌ Failed to upload: " + e.getMessage(), Toast.LENGTH_LONG).show();
             });
+    }
+    
+    /**
+     * Converts Bitmap to Base64 String
+     * @param bitmap The bitmap to convert
+     * @return Base64 encoded string or null if conversion fails
+     */
+    private String convertBitmapToBase64(Bitmap bitmap) {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            // Compress to JPEG with 75% quality to reduce size
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 75, baos);
+            byte[] imageBytes = baos.toByteArray();
+            
+            // Encode to Base64
+            return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    /**
+     * Converts Base64 String to Bitmap
+     * @param base64String The Base64 encoded string
+     * @return Decoded Bitmap or null if decoding fails
+     */
+    private Bitmap convertBase64ToBitmap(String base64String) {
+        try {
+            // Decode Base64 string to byte array
+            byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
+            
+            // Convert byte array to Bitmap
+            return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
     private void removeProfilePicture() {
@@ -320,10 +359,11 @@ public class ProfileActivity extends AppCompatActivity {
                 progressDialog.setMessage("Removing profile picture...");
                 progressDialog.show();
                 
-                StorageReference storageRef = FirebaseStorage.getInstance().getReference()
-                    .child("profile_pictures/" + user.getUid() + ".jpg");
-                
-                storageRef.delete()
+                // Remove Base64 string from Firestore (using profileImageUrl field)
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("users")
+                    .document(user.getUid())
+                    .update("profileImageUrl", null)
                     .addOnSuccessListener(aVoid -> {
                         progressDialog.dismiss();
                         Toast.makeText(this, "✅ Profile picture removed successfully", Toast.LENGTH_SHORT).show();
@@ -332,14 +372,7 @@ public class ProfileActivity extends AppCompatActivity {
                     })
                     .addOnFailureListener(e -> {
                         progressDialog.dismiss();
-                        // Don't show error if file doesn't exist - just reset to default
-                        if (e.getMessage() != null && e.getMessage().contains("does not exist")) {
-                            Toast.makeText(this, "Profile picture already removed", Toast.LENGTH_SHORT).show();
-                            ivCurrentPicture.setImageResource(R.drawable.ic_person);
-                            resetImagePreview();
-                        } else {
-                            Toast.makeText(this, "❌ Failed to remove: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
+                        Toast.makeText(this, "❌ Failed to remove: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     });
             })
             .setNegativeButton("No", null)
@@ -347,16 +380,63 @@ public class ProfileActivity extends AppCompatActivity {
     }
     
     private void loadProfilePicture(String userId) {
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference()
-            .child("profile_pictures/" + userId + ".jpg");
-        
-        storageRef.getBytes(2 * 1024 * 1024)
-            .addOnSuccessListener(bytes -> {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                ivCurrentPicture.setImageBitmap(bitmap);
+        // Fetch Base64 string from Firestore (using profileImageUrl field)
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users")
+            .document(userId)
+            .get()
+            .addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    // Try to load from profileImageUrl field (Base64 format)
+                    String base64Image = documentSnapshot.getString("profileImageUrl");
+                    
+                    if (base64Image != null && !base64Image.isEmpty() && 
+                        !base64Image.equals("default") &&
+                        (base64Image.startsWith("data:image") || base64Image.length() > 100)) {
+                        
+                        try {
+                            // Remove data URI prefix if present
+                            String cleanBase64 = base64Image;
+                            if (base64Image.startsWith("data:image")) {
+                                cleanBase64 = base64Image.substring(base64Image.indexOf(",") + 1);
+                            }
+                            
+                            // Decode Base64 string to Bitmap
+                            Bitmap bitmap = convertBase64ToBitmap(cleanBase64);
+                            
+                            if (bitmap != null) {
+                                ivCurrentPicture.setImageBitmap(bitmap);
+                                return;
+                            }
+                        } catch (Exception e) {
+                            android.util.Log.e("ProfileActivity", "Error decoding Base64 image", e);
+                        }
+                    }
+                    
+                    // Fallback: Try old profileImageBase64 field for backwards compatibility
+                    if (documentSnapshot.contains("profileImageBase64")) {
+                        String base64ImageOld = documentSnapshot.getString("profileImageBase64");
+                        
+                        if (base64ImageOld != null && !base64ImageOld.isEmpty()) {
+                            Bitmap bitmap = convertBase64ToBitmap(base64ImageOld);
+                            
+                            if (bitmap != null) {
+                                ivCurrentPicture.setImageBitmap(bitmap);
+                                return;
+                            }
+                        }
+                    }
+                    
+                    // No profile picture found - use default
+                    ivCurrentPicture.setImageResource(R.drawable.ic_person);
+                } else {
+                    // Document doesn't exist - use default
+                    ivCurrentPicture.setImageResource(R.drawable.ic_person);
+                }
             })
             .addOnFailureListener(e -> {
-                // Keep default image if profile picture doesn't exist
+                // Keep default image if loading fails
+                ivCurrentPicture.setImageResource(R.drawable.ic_person);
             });
     }
     

@@ -12,7 +12,6 @@ public class ManageAccountsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         
         Toast.makeText(this, "Manage Accounts - Coming Soon", Toast.LENGTH_SHORT).show();
     }

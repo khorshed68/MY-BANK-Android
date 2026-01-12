@@ -1,13 +1,16 @@
 package com.khorshed.mybank.activities.customer;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.button.MaterialButton;
 import com.khorshed.mybank.R;
 import com.khorshed.mybank.models.Transaction;
 import com.khorshed.mybank.utils.FormatUtils;
@@ -21,23 +24,35 @@ public class TransactionsActivity extends AppCompatActivity {
 
     private CustomerViewModel customerViewModel;
     private String accountId;
+    private LinearLayout transactionsContainer;
+    private TextView transactionCountText;
+    private MaterialButton closeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_transactions);
         
         accountId = getIntent().getStringExtra("ACCOUNT_ID");
         
+        initViews();
         customerViewModel = new ViewModelProvider(this).get(CustomerViewModel.class);
         loadTransactions();
+    }
+
+    private void initViews() {
+        transactionsContainer = findViewById(R.id.transactionsContainer);
+        transactionCountText = findViewById(R.id.transactionCountText);
+        closeButton = findViewById(R.id.closeButton);
+        
+        closeButton.setOnClickListener(v -> finish());
     }
 
     private void loadTransactions() {
         if (accountId != null) {
             customerViewModel.getTransactions(accountId).observe(this, transactions -> {
                 if (transactions != null && !transactions.isEmpty()) {
-                    showTransactionsDialog(transactions);
+                    displayTransactions(transactions);
                 } else {
                     Toast.makeText(this, "No transactions found", Toast.LENGTH_SHORT).show();
                     finish();
@@ -49,7 +64,7 @@ public class TransactionsActivity extends AppCompatActivity {
                 if (account != null) {
                     customerViewModel.getTransactions(account.getAccountId()).observe(this, transactions -> {
                         if (transactions != null && !transactions.isEmpty()) {
-                            showTransactionsDialog(transactions);
+                            displayTransactions(transactions);
                         } else {
                             Toast.makeText(this, "No transactions found", Toast.LENGTH_SHORT).show();
                             finish();
@@ -60,51 +75,63 @@ public class TransactionsActivity extends AppCompatActivity {
         }
     }
 
-    private void showTransactionsDialog(List<Transaction> transactions) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("📋 Transaction History");
+    private void displayTransactions(List<Transaction> transactions) {
+        // Clear previous views
+        transactionsContainer.removeAllViews();
         
-        StringBuilder message = new StringBuilder();
+        // Update transaction count
+        transactionCountText.setText("Total Transactions: " + transactions.size());
+        
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault());
+        LayoutInflater inflater = LayoutInflater.from(this);
         
-        int count = 0;
+        // Display all transactions (no limit)
         for (Transaction transaction : transactions) {
-            if (count >= 20) break; // Show last 20 transactions
+            View itemView = inflater.inflate(R.layout.item_transaction, transactionsContainer, false);
             
+            TextView iconView = itemView.findViewById(R.id.transactionIcon);
+            TextView typeView = itemView.findViewById(R.id.transactionType);
+            TextView dateView = itemView.findViewById(R.id.transactionDate);
+            TextView amountView = itemView.findViewById(R.id.transactionAmount);
+            TextView balanceView = itemView.findViewById(R.id.transactionBalance);
+            TextView descriptionView = itemView.findViewById(R.id.transactionDescription);
+            
+            // Set transaction icon and type
             String typeIcon = getTypeIcon(transaction.getType());
-            message.append(typeIcon).append(" ").append(transaction.getType()).append("\n");
-            message.append("Amount: ").append(FormatUtils.formatCurrency(transaction.getAmount())).append("\n");
-            message.append("Balance: ").append(FormatUtils.formatCurrency(transaction.getBalanceAfter())).append("\n");
+            iconView.setText(typeIcon);
+            typeView.setText(transaction.getType().toUpperCase());
             
-            if (transaction.getDescription() != null && !transaction.getDescription().isEmpty()) {
-                message.append("Note: ").append(transaction.getDescription()).append("\n");
-            }
-            
+            // Set date
             if (transaction.getCreatedAt() != null) {
-                message.append("Date: ").append(dateFormat.format(transaction.getCreatedAt())).append("\n");
+                dateView.setText(dateFormat.format(transaction.getCreatedAt()));
+            } else {
+                dateView.setText("Date not available");
             }
             
-            message.append("\n");
-            count++;
+            // Set amount with color based on transaction type
+            String amountText = FormatUtils.formatCurrency(transaction.getAmount());
+            amountView.setText(amountText);
+            
+            // Color coding: Green for deposits, Red for withdrawals/transfers
+            if ("DEPOSIT".equalsIgnoreCase(transaction.getType())) {
+                amountView.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+            } else {
+                amountView.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+            }
+            
+            // Set balance after transaction
+            balanceView.setText("Balance After: " + FormatUtils.formatCurrency(transaction.getBalanceAfter()));
+            
+            // Set description if available
+            if (transaction.getDescription() != null && !transaction.getDescription().isEmpty()) {
+                descriptionView.setVisibility(View.VISIBLE);
+                descriptionView.setText("Note: " + transaction.getDescription());
+            } else {
+                descriptionView.setVisibility(View.GONE);
+            }
+            
+            transactionsContainer.addView(itemView);
         }
-        
-        message.append("\nShowing last ").append(count).append(" transactions");
-        
-        TextView messageView = new TextView(this);
-        messageView.setText(message.toString());
-        messageView.setPadding(50, 40, 50, 40);
-        messageView.setTextSize(14);
-        
-        builder.setView(messageView);
-        builder.setPositiveButton("Close", (dialog, which) -> {
-            dialog.dismiss();
-            finish();
-        });
-        
-        builder.setOnCancelListener(dialog -> finish());
-        
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     private String getTypeIcon(String type) {

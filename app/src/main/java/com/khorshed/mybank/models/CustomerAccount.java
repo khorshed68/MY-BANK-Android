@@ -11,6 +11,7 @@ public class CustomerAccount {
     private String createdDate;
     private String userId;
     private String accountId;
+    private boolean isSelected;
 
     public CustomerAccount() {
         // Required empty constructor
@@ -29,6 +30,7 @@ public class CustomerAccount {
         this.createdDate = createdDate;
         this.userId = userId;
         this.accountId = accountId;
+        this.isSelected = false;
     }
 
     // Getters and Setters
@@ -110,5 +112,13 @@ public class CustomerAccount {
 
     public void setAccountId(String accountId) {
         this.accountId = accountId;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

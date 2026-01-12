@@ -19,6 +19,7 @@ import com.khorshed.mybank.R;
 import com.khorshed.mybank.activities.admin.AdminDashboardActivity;
 import com.khorshed.mybank.activities.customer.CustomerDashboardActivity;
 import com.khorshed.mybank.activities.staff.StaffDashboardActivity;
+import com.khorshed.mybank.services.EmailService;
 import com.khorshed.mybank.utils.BiometricHelper;
 import com.khorshed.mybank.utils.PreferenceManager;
 import com.khorshed.mybank.viewmodel.AuthViewModel;
@@ -257,6 +258,27 @@ public class LoginActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
+                        // Get account details for email notification
+                        String accountNumber = queryDocumentSnapshots.getDocuments().get(0).getString("accountNumber");
+                        
+                        // Get user name
+                        FirebaseFirestore.getInstance()
+                                .collection("users")
+                                .document(userId)
+                                .get()
+                                .addOnSuccessListener(userDoc -> {
+                                    String userName = userDoc.getString("name");
+                                    
+                                    // Send login email notification
+                                    EmailService.EmailData emailData = new EmailService.EmailData.Builder()
+                                            .customerName(userName != null ? userName : "Customer")
+                                            .accountNumber(accountNumber != null ? accountNumber : "N/A")
+                                            .timestamp(new java.text.SimpleDateFormat("dd MMM yyyy, hh:mm a", java.util.Locale.getDefault()).format(new java.util.Date()))
+                                            .build();
+                                    
+                                    EmailService.sendEmail(email, EmailService.NotificationType.LOGIN, emailData);
+                                });
+                        
                         // User has an active account, proceed with login
                         authViewModel.login(email, password);
                     } else {

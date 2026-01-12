@@ -2,6 +2,8 @@ package com.khorshed.mybank.activities.admin;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,9 +16,16 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.khorshed.mybank.AuditLogsActivity;
+import com.khorshed.mybank.BankConfigurationActivity;
+import com.khorshed.mybank.CustomerOversightActivity;
 import com.khorshed.mybank.R;
+import com.khorshed.mybank.ReportsAnalyticsActivity;
+import com.khorshed.mybank.SystemSettingsActivity;
+import com.khorshed.mybank.TransactionMonitoringActivity;
 import com.khorshed.mybank.activities.LoginActivity;
-import com.khorshed.mybank.activities.staff.ChequeManagementActivity;
+import com.khorshed.mybank.activities.admin.AdminManagementActivity;
+import com.khorshed.mybank.activities.admin.ChequeOversightActivity;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -94,18 +103,100 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     private void loadAdminInfo() {
-        SharedPreferences prefs = getSharedPreferences("MyBankPrefs", MODE_PRIVATE);
-        String adminName = prefs.getString("adminName", "Admin");
-        String profileImageUrl = prefs.getString("profileImageUrl", "");
-        
-        adminNameText.setText("Welcome, " + adminName);
-        
-        if (!profileImageUrl.isEmpty()) {
-            Glide.with(this)
-                .load(profileImageUrl)
-                .placeholder(R.mipmap.ic_launcher)
-                .into(adminProfileImage);
+        // Get current admin user ID
+        if (auth.getCurrentUser() != null) {
+            String userId = auth.getCurrentUser().getUid();
+            
+            // Load admin info from Firestore
+            db.collection("users")
+                .document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String name = documentSnapshot.getString("name");
+                        if (name != null) {
+                            adminNameText.setText(name);
+                        }
+                        
+                        // Load profile picture (Base64 encoded)
+                        loadProfilePicture(userId);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    android.util.Log.e("AdminDashboard", "Failed to load admin info", e);
+                    adminNameText.setText("Admin");
+                });
         }
+    }
+    
+    /**
+     * Load and decode Base64 profile picture from Firestore
+     */
+    private void loadProfilePicture(String userId) {
+        if (userId == null) return;
+        
+        // Load profile picture from Firestore (Base64 encoded)
+        db.collection("users")
+            .document(userId)
+            .get()
+            .addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    // Load Base64 encoded image from profileImageUrl field
+                    String base64Image = documentSnapshot.getString("profileImageUrl");
+                    
+                    if (base64Image != null && !base64Image.isEmpty() && 
+                        !base64Image.equals("default") &&
+                        (base64Image.startsWith("data:image") || base64Image.length() > 100)) {
+                        
+                        try {
+                            // Remove data URI prefix if present
+                            String cleanBase64 = base64Image;
+                            if (base64Image.startsWith("data:image")) {
+                                cleanBase64 = base64Image.substring(base64Image.indexOf(",") + 1);
+                            }
+                            
+                            // Decode Base64 string to byte array
+                            byte[] imageBytes = android.util.Base64.decode(cleanBase64, android.util.Base64.DEFAULT);
+                            
+                            // Convert byte array to Bitmap
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                            
+                            if (bitmap != null) {
+                                // Display profile picture with circular crop using Glide
+                                Glide.with(this)
+                                    .load(bitmap)
+                                    .circleCrop()
+                                    .placeholder(R.mipmap.ic_launcher)
+                                    .into(adminProfileImage);
+                                android.util.Log.d("AdminDashboard", "✅ Base64 image loaded successfully");
+                                return;
+                            }
+                        } catch (Exception e) {
+                            android.util.Log.e("AdminDashboard", "❌ Error decoding Base64 image", e);
+                        }
+                    }
+                    
+                    // No valid profile picture - use default
+                    Glide.with(this)
+                        .load(R.mipmap.ic_launcher)
+                        .circleCrop()
+                        .into(adminProfileImage);
+                } else {
+                    // Document doesn't exist - use default
+                    Glide.with(this)
+                        .load(R.mipmap.ic_launcher)
+                        .circleCrop()
+                        .into(adminProfileImage);
+                }
+            })
+            .addOnFailureListener(e -> {
+                // Loading failed - use default icon
+                Glide.with(this)
+                    .load(R.mipmap.ic_launcher)
+                    .circleCrop()
+                    .into(adminProfileImage);
+                android.util.Log.e("AdminDashboard", "Failed to load profile data", e);
+            });
     }
 
     private void loadStatistics() {
@@ -257,39 +348,47 @@ public class AdminDashboardActivity extends AppCompatActivity {
         });
         
         staffManagementButton.setOnClickListener(v -> {
-            Toast.makeText(this, "Staff Management - Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, StaffManagementActivity.class);
+            startActivity(intent);
         });
         
         customerOversightButton.setOnClickListener(v -> {
-            Toast.makeText(this, "Customer Oversight - Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, CustomerOversightActivity.class);
+            startActivity(intent);
         });
         
         transactionMonitoringButton.setOnClickListener(v -> {
-            Toast.makeText(this, "Transaction Monitoring - Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, TransactionMonitoringActivity.class);
+            startActivity(intent);
         });
         
         bankConfigurationButton.setOnClickListener(v -> {
-            Toast.makeText(this, "Bank Configuration - Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, BankConfigurationActivity.class);
+            startActivity(intent);
         });
         
         reportsAnalyticsButton.setOnClickListener(v -> {
-            Toast.makeText(this, "Reports & Analytics - Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, ReportsAnalyticsActivity.class);
+            startActivity(intent);
         });
         
         auditLogsButton.setOnClickListener(v -> {
-            Toast.makeText(this, "Audit Logs - Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(AdminDashboardActivity.this, AuditLogsActivity.class);
+            startActivity(intent);
         });
         
         systemSettingsButton.setOnClickListener(v -> {
-            Toast.makeText(this, "System Settings - Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(AdminDashboardActivity.this, SystemSettingsActivity.class);
+            startActivity(intent);
         });
         
         adminManagementButton.setOnClickListener(v -> {
-            Toast.makeText(this, "Admin Management - Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, AdminManagementActivity.class);
+            startActivity(intent);
         });
         
         chequeOversightButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ChequeManagementActivity.class);
+            Intent intent = new Intent(this, ChequeOversightActivity.class);
             startActivity(intent);
         });
     }

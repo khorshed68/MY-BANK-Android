@@ -12,9 +12,12 @@ public class ChequeBook {
     private int numberOfLeaves;
     private int usedLeaves;
     private String issuedBy;
-    private String status; // ACTIVE, COMPLETED, BLOCKED
+    private String approvedBy;
+    private String status; // PENDING, APPROVED, ISSUED, COMPLETED, REJECTED, CANCELLED, BLOCKED
     @ServerTimestamp
     private Date issuedDate;
+    @ServerTimestamp
+    private Date requestDate;
     
     // For display in table
     private long startChequeNumber;
@@ -113,7 +116,27 @@ public class ChequeBook {
         this.endChequeNumber = endChequeNumber;
     }
     
+    public Date getRequestDate() {
+        return requestDate;
+    }
+
+    public void setRequestDate(Date requestDate) {
+        this.requestDate = requestDate;
+    }
+
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+    
     public int getRemainingLeaves() {
         return numberOfLeaves - usedLeaves;
+    }
+    
+    public String getBookNumber() {
+        return chequeBookNumber;
     }
 }

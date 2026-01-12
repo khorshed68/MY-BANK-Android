@@ -119,7 +119,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Max size: 2 MB\nFormat: JPG, PNG, JPEG"
+                        android:text="Max size: 500 KB\nFormat: JPG, PNG, JPEG"
                         android:textSize="10sp"
                         android:textColor="#94A3B8"
                         android:gravity="center"

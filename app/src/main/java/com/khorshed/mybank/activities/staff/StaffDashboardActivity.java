@@ -1,6 +1,8 @@
 package com.khorshed.mybank.activities.staff;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.khorshed.mybank.AccountApprovalActivity;
 import com.khorshed.mybank.R;
 import com.khorshed.mybank.activities.LoginActivity;
@@ -87,14 +90,8 @@ public class StaffDashboardActivity extends AppCompatActivity {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.getDefault());
                 lastLoginText.setText("Last Login: " + sdf.format(new Date()));
                 
-                // Load profile image if available
-                if (user.getProfileImageUrl() != null && !user.getProfileImageUrl().isEmpty()) {
-                    Glide.with(this)
-                        .load(user.getProfileImageUrl())
-                        .circleCrop()
-                        .placeholder(R.drawable.ic_person)
-                        .into(staffProfileImage);
-                }
+                // Load profile picture from Firestore (Base64 encoded)
+                loadProfilePicture(user.getUserId());
                 
                 // Configure permissions based on role
                 configurePermissions(currentUserRole);
@@ -170,6 +167,77 @@ public class StaffDashboardActivity extends AppCompatActivity {
         manageChequesButton.setAlpha(1.0f);
         generateReportsButton.setAlpha(1.0f);
         activityLogsButton.setAlpha(1.0f);
+    }
+
+    /**
+     * Load and decode Base64 profile picture from Firestore
+     */
+    private void loadProfilePicture(String userId) {
+        if (userId == null) return;
+        
+        // Load profile picture from Firestore (Base64 encoded)
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users")
+            .document(userId)
+            .get()
+            .addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    // Load Base64 encoded image from profileImageUrl field
+                    String base64Image = documentSnapshot.getString("profileImageUrl");
+                    
+                    if (base64Image != null && !base64Image.isEmpty() && 
+                        !base64Image.equals("default") &&
+                        (base64Image.startsWith("data:image") || base64Image.length() > 100)) {
+                        
+                        try {
+                            // Remove data URI prefix if present
+                            String cleanBase64 = base64Image;
+                            if (base64Image.startsWith("data:image")) {
+                                cleanBase64 = base64Image.substring(base64Image.indexOf(",") + 1);
+                            }
+                            
+                            // Decode Base64 string to byte array
+                            byte[] imageBytes = android.util.Base64.decode(cleanBase64, android.util.Base64.DEFAULT);
+                            
+                            // Convert byte array to Bitmap
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                            
+                            if (bitmap != null) {
+                                // Display profile picture with circular crop using Glide
+                                Glide.with(this)
+                                    .load(bitmap)
+                                    .circleCrop()
+                                    .placeholder(R.drawable.ic_person)
+                                    .into(staffProfileImage);
+                                android.util.Log.d("StaffDashboard", "✅ Base64 image loaded successfully");
+                                return;
+                            }
+                        } catch (Exception e) {
+                            android.util.Log.e("StaffDashboard", "❌ Error decoding Base64 image", e);
+                        }
+                    }
+                    
+                    // No valid profile picture - use default
+                    Glide.with(this)
+                        .load(R.drawable.ic_person)
+                        .circleCrop()
+                        .into(staffProfileImage);
+                } else {
+                    // Document doesn't exist - use default
+                    Glide.with(this)
+                        .load(R.drawable.ic_person)
+                        .circleCrop()
+                        .into(staffProfileImage);
+                }
+            })
+            .addOnFailureListener(e -> {
+                // Loading failed - use default icon
+                Glide.with(this)
+                    .load(R.drawable.ic_person)
+                    .circleCrop()
+                    .into(staffProfileImage);
+                android.util.Log.e("StaffDashboard", "Failed to load profile data", e);
+            });
     }
 
     private void setupClickListeners() {

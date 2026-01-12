@@ -3,6 +3,8 @@ package com.khorshed.mybank.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -24,13 +27,14 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.khorshed.mybank.R;
 import com.khorshed.mybank.models.User;
 import com.khorshed.mybank.viewmodel.AuthViewModel;
 
-import java.util.UUID;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
 public class StaffRegisterActivity extends AppCompatActivity {
 
@@ -42,7 +46,8 @@ public class StaffRegisterActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private AuthViewModel authViewModel;
     private Uri selectedImageUri;
-    private String uploadedImageUrl;
+    private Bitmap selectedImageBitmap;
+    private String base64ProfileImage; // Base64 encoded image string
 
     // Activity result launcher for image picker
     private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
@@ -51,12 +56,8 @@ public class StaffRegisterActivity extends AppCompatActivity {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 selectedImageUri = result.getData().getData();
                 if (selectedImageUri != null) {
-                    Glide.with(this)
-                        .load(selectedImageUri)
-                        .circleCrop()
-                        .placeholder(R.drawable.ic_person)
-                        .into(profileImagePreview);
-                    Toast.makeText(this, "Image selected successfully", Toast.LENGTH_SHORT).show();
+                    // Copy file to cache immediately to avoid URI permission issues
+                    copyImageToCache();
                 }
             }
         }
@@ -134,9 +135,21 @@ public class StaffRegisterActivity extends AppCompatActivity {
     }
 
     private void setupClickListeners() {
-        registerButton.setOnClickListener(v -> performRegistration());
+        registerButton.setOnClickListener(v -> {
+            // Convert image to Base64 if selected, then register
+            if (selectedImageBitmap != null) {
+                convertImageToBase64ThenRegister();
+            } else {
+                performRegistration();
+            }
+        });
         
-        chooseImageButton.setOnClickListener(v -> checkPermissionAndPickImage());
+        chooseImageButton.setOnClickListener(v -> {
+            Toast.makeText(this, "Opening image picker...", Toast.LENGTH_SHORT).show();
+            checkPermissionAndPickImage();
+        });
+        
+        profileImagePreview.setOnClickListener(v -> checkPermissionAndPickImage());
         
         backToLoginButton.setOnClickListener(v -> finish());
     }
@@ -199,13 +212,8 @@ public class StaffRegisterActivity extends AppCompatActivity {
             return;
         }
 
-        // Profile picture is optional - upload if selected, otherwise register without image
-        if (selectedImageUri != null) {
-            uploadImageAndRegister(email, password, name, phone, role, username);
-        } else {
-            // Register without profile picture (optional)
-            registerStaff(email, password, name, phone, role, username, null);
-        }
+        // Proceed with registration (image already converted to Base64 if selected)
+        registerStaff(email, password, name, phone, role, username);
     }
 
     private void checkPermissionAndPickImage() {
@@ -231,37 +239,142 @@ public class StaffRegisterActivity extends AppCompatActivity {
         imagePickerLauncher.launch(intent);
     }
 
-    private void uploadImageAndRegister(String email, String password, String name, 
-                                       String phone, String role, String username) {
+    /**
+     * Copies the selected image to cache directory to avoid URI permission issues
+     */
+    private void copyImageToCache() {
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            inputStream.close();
+            
+            if (bitmap != null) {
+                // Save bitmap to cache
+                File cacheFile = new File(getCacheDir(), "staff_profile_temp.jpg");
+                FileOutputStream fos = new FileOutputStream(cacheFile);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+                fos.close();
+                
+                // Load from cache
+                selectedImageBitmap = BitmapFactory.decodeFile(cacheFile.getAbsolutePath());
+                
+                // Update UI
+                Glide.with(this)
+                    .load(selectedImageBitmap)
+                    .circleCrop()
+                    .placeholder(R.drawable.ic_person)
+                    .into(profileImagePreview);
+                    
+                Toast.makeText(this, "✅ Image selected successfully!", Toast.LENGTH_SHORT).show();
+                android.util.Log.d("StaffRegisterActivity", "Image loaded and cached successfully");
+            }
+        } catch (Exception e) {
+            android.util.Log.e("StaffRegisterActivity", "Error loading image", e);
+            Toast.makeText(this, "❌ Failed to load image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+    
+    /**
+     * Converts the selected image to Base64 string before registration
+     * This method runs in background to avoid blocking UI
+     */
+    private void convertImageToBase64ThenRegister() {
         progressBar.setVisibility(View.VISIBLE);
         registerButton.setEnabled(false);
-
-        String fileName = "staff_profile_images/" + UUID.randomUUID().toString() + ".jpg";
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(fileName);
-
-        storageRef.putFile(selectedImageUri)
-            .addOnSuccessListener(taskSnapshot -> {
-                storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    uploadedImageUrl = uri.toString();
-                    Toast.makeText(this, "Profile picture uploaded successfully!", Toast.LENGTH_SHORT).show();
-                    registerStaff(email, password, name, phone, role, username, uploadedImageUrl);
-                }).addOnFailureListener(e -> {
-                    // If getting URL fails, register without image
-                    Toast.makeText(this, "Image uploaded but URL retrieval failed. Registering without image.", 
-                        Toast.LENGTH_SHORT).show();
-                    registerStaff(email, password, name, phone, role, username, null);
+        
+        Toast.makeText(this, "Processing profile picture...", Toast.LENGTH_SHORT).show();
+        android.util.Log.d("StaffRegisterActivity", "=== Converting image to Base64 ===");
+        
+        // Run compression and Base64 conversion in background thread
+        new Thread(() -> {
+            try {
+                // Compress bitmap to JPEG with quality adjustment
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                int quality = 75; // Start with 75% quality
+                selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                byte[] imageBytes = baos.toByteArray();
+                
+                // Reduce quality if image is too large (target: ~400 KB for Base64)
+                while (imageBytes.length > 400 * 1024 && quality > 30) {
+                    baos.reset();
+                    quality -= 10;
+                    selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                    imageBytes = baos.toByteArray();
+                    android.util.Log.d("StaffRegisterActivity", "Compressed to quality " + quality + ": " + imageBytes.length + " bytes");
+                }
+                
+                int finalSize = imageBytes.length;
+                android.util.Log.d("StaffRegisterActivity", "Final image size: " + finalSize + " bytes");
+                
+                // Convert to Base64
+                base64ProfileImage = android.util.Base64.encodeToString(imageBytes, android.util.Base64.DEFAULT);
+                int base64Size = base64ProfileImage.length();
+                android.util.Log.d("StaffRegisterActivity", "Base64 string size: " + base64Size + " characters");
+                
+                // Check if Base64 string is within Firestore limits
+                if (base64Size > 500 * 1024) {
+                    runOnUiThread(() -> {
+                        progressBar.setVisibility(View.GONE);
+                        registerButton.setEnabled(true);
+                        new AlertDialog.Builder(this)
+                            .setTitle("Image Too Large")
+                            .setMessage("Image file is too large even after compression. Please select a smaller image or continue without profile picture.")
+                            .setPositiveButton("Continue Without Image", (d, w) -> {
+                                base64ProfileImage = null;
+                                selectedImageBitmap = null;
+                                performRegistration();
+                            })
+                            .setNegativeButton("Try Another Image", null)
+                            .show();
+                    });
+                    return;
+                }
+                
+                // Success - proceed with registration on UI thread
+                runOnUiThread(() -> {
+                    android.util.Log.d("StaffRegisterActivity", "✅ Image converted to Base64 successfully");
+                    Toast.makeText(this, "✅ Image processed!", Toast.LENGTH_SHORT).show();
+                    performRegistration();
                 });
-            })
-            .addOnFailureListener(e -> {
-                // If upload fails, continue registration without image
-                Toast.makeText(this, "Image upload failed: " + e.getMessage() + ". Registering without profile picture.", 
-                    Toast.LENGTH_LONG).show();
-                registerStaff(email, password, name, phone, role, username, null);
-            });
+                
+            } catch (OutOfMemoryError e) {
+                android.util.Log.e("StaffRegisterActivity", "❌ Out of memory during compression", e);
+                runOnUiThread(() -> {
+                    progressBar.setVisibility(View.GONE);
+                    registerButton.setEnabled(true);
+                    new AlertDialog.Builder(this)
+                        .setTitle("Memory Error")
+                        .setMessage("Image is too large to process. Please select a smaller image or continue without profile picture.")
+                        .setPositiveButton("Continue Without Image", (d, w) -> {
+                            base64ProfileImage = null;
+                            selectedImageBitmap = null;
+                            performRegistration();
+                        })
+                        .setNegativeButton("Try Another Image", null)
+                        .show();
+                });
+            } catch (Exception e) {
+                android.util.Log.e("StaffRegisterActivity", "❌ Error converting image to Base64", e);
+                runOnUiThread(() -> {
+                    progressBar.setVisibility(View.GONE);
+                    registerButton.setEnabled(true);
+                    new AlertDialog.Builder(this)
+                        .setTitle("Processing Error")
+                        .setMessage("Failed to process image: " + e.getMessage() + "\n\nContinue without profile picture?")
+                        .setPositiveButton("Continue Without Image", (d, w) -> {
+                            base64ProfileImage = null;
+                            selectedImageBitmap = null;
+                            performRegistration();
+                        })
+                        .setNegativeButton("Try Another Image", null)
+                        .show();
+                });
+            }
+        }).start();
     }
 
     private void registerStaff(String email, String password, String name, 
-                              String phone, String role, String username, String imageUrl) {
+                              String phone, String role, String username) {
         progressBar.setVisibility(View.VISIBLE);
         registerButton.setEnabled(false);
         
@@ -275,8 +388,8 @@ public class StaffRegisterActivity extends AppCompatActivity {
                     User staffUser = new User(userId, email, name, phone, role.toUpperCase());
                     staffUser.setUsername(username); // Set username for login
                     staffUser.setActive(true); // Staff accounts are immediately active - no approval needed
-                    if (imageUrl != null && !imageUrl.isEmpty()) {
-                        staffUser.setProfileImageUrl(imageUrl);
+                    if (base64ProfileImage != null && !base64ProfileImage.isEmpty()) {
+                        staffUser.setProfileImageUrl(base64ProfileImage); // Store Base64 image
                     }
                     
                     // Save to Firestore

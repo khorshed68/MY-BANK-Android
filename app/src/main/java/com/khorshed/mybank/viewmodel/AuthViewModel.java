@@ -6,16 +6,19 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.khorshed.mybank.models.Account;
 import com.khorshed.mybank.models.User;
 import com.khorshed.mybank.repository.AccountRepository;
 import com.khorshed.mybank.repository.UserRepository;
+import com.khorshed.mybank.services.EmailService;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class AuthViewModel extends ViewModel {
     private final FirebaseAuth auth;
+    private final FirebaseFirestore db;
     private final UserRepository userRepository;
     private final AccountRepository accountRepository;
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
@@ -24,6 +27,7 @@ public class AuthViewModel extends ViewModel {
 
     public AuthViewModel() {
         auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
         userRepository = new UserRepository();
         accountRepository = new AccountRepository();
     }
@@ -256,6 +260,24 @@ public class AuthViewModel extends ViewModel {
                             .addOnCompleteListener(updateTask -> {
                                 isLoading.setValue(false);
                                 if (updateTask.isSuccessful()) {
+                                    // Send password change email notification
+                                    db.collection("users").document(user.getUid())
+                                        .get()
+                                        .addOnSuccessListener(documentSnapshot -> {
+                                            String userName = documentSnapshot.getString("name");
+                                            String accountNumber = documentSnapshot.getString("accountNumber");
+                                            
+                                            if (user.getEmail() != null) {
+                                                EmailService.EmailData emailData = new EmailService.EmailData.Builder()
+                                                        .customerName(userName != null ? userName : "Customer")
+                                                        .accountNumber(accountNumber != null ? accountNumber : "N/A")
+                                                        .timestamp(new java.text.SimpleDateFormat("dd MMM yyyy, hh:mm a", java.util.Locale.getDefault()).format(new java.util.Date()))
+                                                        .build();
+                                                
+                                                EmailService.sendEmail(user.getEmail(), EmailService.NotificationType.PASSWORD_CHANGE, emailData);
+                                            }
+                                        });
+                                    
                                     isSuccess.setValue(true);
                                 } else {
                                     errorMessage.setValue(updateTask.getException() != null ? 

@@ -39,7 +39,7 @@
             android:text="MY BANK"
             android:textSize="32sp"
             android:textStyle="bold"
-            android:textColor="#6366F1"
+            android:textColor="#FFFFFF"
             android:background="@drawable/gradient_purple"
             android:paddingStart="24dp"
             android:paddingEnd="24dp"

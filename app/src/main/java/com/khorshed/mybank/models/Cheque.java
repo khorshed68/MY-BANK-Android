@@ -11,6 +11,7 @@ public class Cheque {
     private String accountId;
     private String accountNumber;
     private String userId;
+    private String customerName;
     private double amount;
     private String payeeName;
     private String status; // ISSUED, DEPOSITED, PENDING_CLEARANCE, CLEARED, BOUNCED, CANCELLED
@@ -77,6 +78,14 @@ public class Cheque {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public double getAmount() {

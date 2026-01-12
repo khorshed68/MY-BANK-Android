@@ -12,7 +12,6 @@ public class AdminReportsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         
         Toast.makeText(this, "Reports - Coming Soon", Toast.LENGTH_SHORT).show();
     }

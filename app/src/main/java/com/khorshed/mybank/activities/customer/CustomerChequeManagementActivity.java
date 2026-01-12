@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.khorshed.mybank.R;
@@ -28,6 +29,7 @@ import com.khorshed.mybank.models.Account;
 import com.khorshed.mybank.models.Cheque;
 import com.khorshed.mybank.models.ChequeBook;
 import com.khorshed.mybank.models.ChequeBookRequest;
+import com.khorshed.mybank.services.EmailService;
 import com.khorshed.mybank.models.DepositedCheque;
 
 import java.text.SimpleDateFormat;
@@ -901,6 +903,20 @@ public class CustomerChequeManagementActivity extends AppCompatActivity {
                     .set(request)
                     .addOnSuccessListener(aVoid -> {
                         progressBar.setVisibility(View.GONE);
+                        
+                        // Send email notification for cheque book request
+                        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                        if (firebaseUser != null && firebaseUser.getEmail() != null) {
+                            EmailService.EmailData emailData = new EmailService.EmailData.Builder()
+                                    .customerName(userName != null ? userName : "Customer")
+                                    .accountNumber(selectedAccount.getAccountNumber())
+                                    .numberOfLeaves(numberOfLeaves)
+                                    .requestId(requestId)
+                                    .timestamp(new java.text.SimpleDateFormat("dd MMM yyyy, hh:mm a", java.util.Locale.getDefault()).format(new java.util.Date()))
+                                    .build();
+                            
+                            EmailService.sendEmail(firebaseUser.getEmail(), EmailService.NotificationType.CHEQUE_REQUEST, emailData);
+                        }
                         
                         new AlertDialog.Builder(this)
                             .setTitle("Request Submitted")

@@ -3,6 +3,8 @@ package com.khorshed.mybank.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +18,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
@@ -26,8 +31,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.khorshed.mybank.R;
 import com.khorshed.mybank.models.AccountApplication;
 import com.khorshed.mybank.viewmodel.AuthViewModel;
@@ -46,7 +49,8 @@ public class RegisterActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private AuthViewModel authViewModel;
     private Uri selectedImageUri;
-    private String uploadedImageUrl;
+    private Bitmap selectedImageBitmap;
+    private String base64ProfileImage; // Base64 encoded image string
     
     // Activity result launcher for image picker
     private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
@@ -55,13 +59,8 @@ public class RegisterActivity extends AppCompatActivity {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 selectedImageUri = result.getData().getData();
                 if (selectedImageUri != null) {
-                    // Display selected image
-                    Glide.with(this)
-                        .load(selectedImageUri)
-                        .circleCrop()
-                        .placeholder(R.drawable.ic_logo)
-                        .into(profileImageView);
-                    Toast.makeText(this, "Image selected successfully", Toast.LENGTH_SHORT).show();
+                    // Copy file to cache immediately to avoid URI permission issues
+                    copyImageToCache();
                 }
             }
         }
@@ -159,9 +158,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void setupClickListeners() {
         registerButton.setOnClickListener(v -> {
-            // Upload image first if selected, then register
-            if (selectedImageUri != null) {
-                uploadImageThenRegister();
+            // Convert image to Base64 if selected, then register
+            if (selectedImageBitmap != null) {
+                convertImageToBase64ThenRegister();
             } else {
                 performRegistration();
             }
@@ -179,29 +178,103 @@ public class RegisterActivity extends AppCompatActivity {
         findViewById(R.id.loginLink).setOnClickListener(v -> finish());
     }
     
-    private void uploadImageThenRegister() {
+    /**
+     * Converts the selected image to Base64 string before registration
+     * This method runs in background to avoid blocking UI
+     */
+    private void convertImageToBase64ThenRegister() {
         progressBar.setVisibility(View.VISIBLE);
         registerButton.setEnabled(false);
         
-        String fileName = "customer_profile_images/" + UUID.randomUUID().toString() + ".jpg";
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(fileName);
+        Toast.makeText(this, "Processing profile picture...", Toast.LENGTH_SHORT).show();
+        android.util.Log.d("RegisterActivity", "=== Converting image to Base64 ===");
         
-        storageRef.putFile(selectedImageUri)
-            .addOnSuccessListener(taskSnapshot -> {
-                storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    uploadedImageUrl = uri.toString();
-                    performRegistration();
-                }).addOnFailureListener(e -> {
-                    Toast.makeText(this, "Image uploaded but URL failed. Registering without image.", 
-                        Toast.LENGTH_SHORT).show();
+        // Run compression and Base64 conversion in background thread
+        new Thread(() -> {
+            try {
+                // Compress bitmap to JPEG with quality adjustment
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                int quality = 75; // Start with 75% quality
+                selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                byte[] imageBytes = baos.toByteArray();
+                
+                // Reduce quality if image is too large (target: ~400 KB for Base64)
+                while (imageBytes.length > 400 * 1024 && quality > 30) {
+                    baos.reset();
+                    quality -= 10;
+                    selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                    imageBytes = baos.toByteArray();
+                    android.util.Log.d("RegisterActivity", "Compressed to quality " + quality + ": " + imageBytes.length + " bytes");
+                }
+                
+                int finalSize = imageBytes.length;
+                android.util.Log.d("RegisterActivity", "Final image size: " + finalSize + " bytes");
+                
+                // Convert to Base64
+                base64ProfileImage = android.util.Base64.encodeToString(imageBytes, android.util.Base64.DEFAULT);
+                int base64Size = base64ProfileImage.length();
+                android.util.Log.d("RegisterActivity", "Base64 string size: " + base64Size + " characters");
+                
+                // Check if Base64 string is within Firestore limits
+                if (base64Size > 500 * 1024) {
+                    runOnUiThread(() -> {
+                        progressBar.setVisibility(View.GONE);
+                        registerButton.setEnabled(true);
+                        new AlertDialog.Builder(this)
+                            .setTitle("Image Too Large")
+                            .setMessage("Image file is too large even after compression. Please select a smaller image or continue without profile picture.")
+                            .setPositiveButton("Continue Without Image", (d, w) -> {
+                                base64ProfileImage = null;
+                                selectedImageBitmap = null;
+                                performRegistration();
+                            })
+                            .setNegativeButton("Try Another Image", null)
+                            .show();
+                    });
+                    return;
+                }
+                
+                // Success - proceed with registration on UI thread
+                runOnUiThread(() -> {
+                    android.util.Log.d("RegisterActivity", "✅ Image converted to Base64 successfully");
+                    Toast.makeText(this, "✅ Image processed!", Toast.LENGTH_SHORT).show();
                     performRegistration();
                 });
-            })
-            .addOnFailureListener(e -> {
-                Toast.makeText(this, "Image upload failed. Registering without profile picture.", 
-                    Toast.LENGTH_SHORT).show();
-                performRegistration();
-            });
+                
+            } catch (OutOfMemoryError e) {
+                android.util.Log.e("RegisterActivity", "❌ Out of memory during compression", e);
+                runOnUiThread(() -> {
+                    progressBar.setVisibility(View.GONE);
+                    registerButton.setEnabled(true);
+                    new AlertDialog.Builder(this)
+                        .setTitle("Memory Error")
+                        .setMessage("Image is too large to process. Please select a smaller image or continue without profile picture.")
+                        .setPositiveButton("Continue Without Image", (d, w) -> {
+                            base64ProfileImage = null;
+                            selectedImageBitmap = null;
+                            performRegistration();
+                        })
+                        .setNegativeButton("Try Another Image", null)
+                        .show();
+                });
+            } catch (Exception e) {
+                android.util.Log.e("RegisterActivity", "❌ Error converting image to Base64", e);
+                runOnUiThread(() -> {
+                    progressBar.setVisibility(View.GONE);
+                    registerButton.setEnabled(true);
+                    new AlertDialog.Builder(this)
+                        .setTitle("Processing Error")
+                        .setMessage("Failed to process image: " + e.getMessage() + "\n\nContinue without profile picture?")
+                        .setPositiveButton("Continue Without Image", (d, w) -> {
+                            base64ProfileImage = null;
+                            selectedImageBitmap = null;
+                            performRegistration();
+                        })
+                        .setNegativeButton("Try Another Image", null)
+                        .show();
+                });
+            }
+        }).start();
     }
 
     private void performRegistration() {
@@ -329,7 +402,7 @@ public class RegisterActivity extends AppCompatActivity {
         application.setAccountType(accountType);
         application.setInitialDeposit(initialDeposit);
         application.setPassword(password); // Store password for later use
-        application.setProfileImageUrl(uploadedImageUrl); // Store profile image URL
+        application.setProfileImageUrl(base64ProfileImage); // Store Base64 encoded image
         application.setStatus("PENDING");
         application.setSubmittedAt(new Date());
         
@@ -388,4 +461,55 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
         }
     }
+    
+    /**
+     * Load and validate the selected image
+     * Checks that image size is within 500KB limit and compresses if needed
+     */
+    
+    /**
+     * Copy selected image to app cache directory
+     * This ensures we have persistent access regardless of URI permissions
+     */
+    private void copyImageToCache() {
+        try {
+            // Validate URI can be accessed
+            InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
+            if (inputStream == null) {
+                Toast.makeText(this, "❌ Cannot access selected image", Toast.LENGTH_SHORT).show();
+                selectedImageUri = null;
+                return;
+            }
+            
+            // Load bitmap for preview
+            selectedImageBitmap = BitmapFactory.decodeStream(inputStream);
+            inputStream.close();
+            
+            if (selectedImageBitmap == null) {
+                Toast.makeText(this, "❌ Failed to load image", Toast.LENGTH_SHORT).show();
+                selectedImageUri = null;
+                return;
+            }
+            
+            // Display preview
+            Glide.with(this)
+                .load(selectedImageUri)
+                .circleCrop()
+                .placeholder(R.drawable.ic_logo)
+                .into(profileImageView);
+            
+            Toast.makeText(this, "✅ Image selected", Toast.LENGTH_SHORT).show();
+            android.util.Log.d("RegisterActivity", "Image URI validated: " + selectedImageUri.toString());
+            
+        } catch (Exception e) {
+            Toast.makeText(this, "❌ Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            selectedImageUri = null;
+            selectedImageBitmap = null;
+            Glide.with(this)
+                .load(R.drawable.ic_logo)
+                .circleCrop()
+                .into(profileImageView);
+        }
+    }
 }
+
