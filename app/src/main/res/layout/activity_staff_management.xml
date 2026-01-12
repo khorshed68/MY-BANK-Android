@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#E8EAF6">
+
+    <!-- Header Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:background="@android:color/white"
+        android:elevation="4dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="← Back"
+            android:textColor="#5E35B1"
+            android:backgroundTint="@android:color/white"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            app:strokeColor="#5E35B1"
+            app:strokeWidth="1dp"
+            app:cornerRadius="8dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="STAFF MANAGEMENT"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#5E35B1"
+            android:layout_marginStart="16dp"
+            android:shadowColor="#80000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"/>
+
+    </LinearLayout>
+
+    <!-- Search and Filter Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:hint="Search by username, name, or email..."
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@android:color/white"
+            android:textSize="14sp"
+            android:layout_marginEnd="12dp"
+            android:elevation="2dp"/>
+
+        <Spinner
+            android:id="@+id/filterSpinner"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:background="@android:color/white"
+            android:elevation="2dp"
+            android:layout_marginEnd="12dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/createStaffButton"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="+ Create Staff"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#5E35B1"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            app:cornerRadius="8dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"/>
+
+    </LinearLayout>
+
+    <!-- Table Section -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:elevation="2dp">
+
+            <!-- Table Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E0E0E0"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="ID"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Username"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:text="Full Name"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Email"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:text="Role"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:text="Status"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"/>
+
+            </LinearLayout>
+
+            <!-- Table Content -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/staffRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="400dp"/>
+
+            <!-- Empty State -->
+            <TextView
+                android:id="@+id/emptyStateText"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:text="No content in table"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textColor="#9E9E9E"
+                android:visibility="visible"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Action Buttons Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:background="@android:color/white"
+        android:elevation="4dp">
+
+        <!-- First Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/activateButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Activate"
+                android:textColor="@android:color/white"
+                android:backgroundTint="#4CAF50"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                app:cornerRadius="8dp"
+                android:layout_marginEnd="8dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/deactivateButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Deactivate"
+                android:textColor="@android:color/white"
+                android:backgroundTint="#F44336"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                app:cornerRadius="8dp"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+
+        <!-- Second Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/resetPasswordButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Reset Password"
+                android:textColor="#424242"
+                android:backgroundTint="#E0E0E0"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                app:cornerRadius="8dp"
+                android:layout_marginEnd="8dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/viewActivityButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="View Activity"
+                android:textColor="#424242"
+                android:backgroundTint="@android:color/white"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                app:cornerRadius="8dp"
+                app:strokeColor="#E0E0E0"
+                app:strokeWidth="1dp"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

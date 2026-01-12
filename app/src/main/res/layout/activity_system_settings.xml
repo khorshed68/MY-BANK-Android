@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#E8EAF6">
+
+    <!-- Header Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:background="@android:color/white"
+        android:elevation="4dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="← Back"
+            android:textColor="#5E35B1"
+            android:backgroundTint="@android:color/white"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            app:strokeColor="#5E35B1"
+            app:strokeWidth="1dp"
+            app:cornerRadius="8dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="⚙️ SYSTEM SETTINGS &amp; MAINTENANCE"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#5E35B1"
+            android:layout_marginStart="16dp"
+            android:shadowColor="#80000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"/>
+
+    </LinearLayout>
+
+    <!-- Main Content Area -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="32dp">
+
+            <!-- Icon and Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⚙️"
+                android:textSize="80sp"
+                android:layout_marginBottom="24dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="System Settings &amp; Maintenance"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#424242"
+                android:layout_marginBottom="12dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Manage system configuration and maintenance"
+                android:textSize="16sp"
+                android:textColor="#757575"
+                android:layout_marginBottom="32dp"/>
+
+            <!-- Available Functions Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                app:cardBackgroundColor="@android:color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Available Functions:"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#424242"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- Function List -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="• Database Backup"
+                        android:textSize="16sp"
+                        android:textColor="#616161"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="• Database Restore"
+                        android:textSize="16sp"
+                        android:textColor="#616161"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="• Clear Old Logs"
+                        android:textSize="16sp"
+                        android:textColor="#616161"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="• System Health Monitoring"
+                        android:textSize="16sp"
+                        android:textColor="#616161"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="• Performance Optimization"
+                        android:textSize="16sp"
+                        android:textColor="#616161"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Action Buttons Row 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/backupDatabaseButton"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:text="💾 Backup Database"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#4CAF50"
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    app:cornerRadius="8dp"
+                    android:layout_marginEnd="8dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/restoreDatabaseButton"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:text="📥 Restore Database"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#2196F3"
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    app:cornerRadius="8dp"
+                    android:layout_marginStart="8dp"/>
+
+            </LinearLayout>
+
+            <!-- Action Buttons Row 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/clearLogsButton"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:text="🗑️ Clear Logs"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#FF9800"
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    app:cornerRadius="8dp"
+                    android:layout_marginEnd="8dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/systemHealthButton"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:text="📊 System Health"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#673AB7"
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    app:cornerRadius="8dp"
+                    android:layout_marginStart="8dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

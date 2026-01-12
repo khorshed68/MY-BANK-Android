@@ -1,0 +1,1898 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- Header -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:padding="16dp"
+        android:elevation="4dp">
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@android:drawable/ic_menu_revert"
+            android:contentDescription="Back"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="#424242" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Admin - Cheque System Oversight"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#424242" />
+    </RelativeLayout>
+
+    <!-- Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:padding="16dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/refreshButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Refresh All Data"
+            android:textColor="#0288D1"
+            android:backgroundTint="#E1F5FE"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/exportReportButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Export Report"
+            android:textColor="#424242"
+            android:backgroundTint="#E0E0E0"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/backToDashboardButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Back to Dashboard"
+            android:textColor="#424242"
+            android:backgroundTint="#E0E0E0" />
+    </LinearLayout>
+
+    <!-- Tabs -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:background="#D0D0D0">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/overviewTab"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Overview &amp; Statistics"
+                android:textSize="13sp"
+                android:textColor="#424242"
+                android:background="@android:color/white"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp" />
+
+            <Button
+                android:id="@+id/allChequeBooksTab"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="All Cheque Books"
+                android:textSize="13sp"
+                android:textColor="#424242"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp" />
+
+            <Button
+                android:id="@+id/allChequesTab"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="All Cheques"
+                android:textSize="13sp"
+                android:textColor="#424242"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp" />
+
+            <Button
+                android:id="@+id/transactionHistoryTab"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Transaction History"
+                android:textSize="13sp"
+                android:textColor="#424242"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp" />
+
+            <Button
+                android:id="@+id/eligibilitySettingsTab"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Eligibility Settings"
+                android:textSize="13sp"
+                android:textColor="#424242"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Content Area -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!-- Loading Progress Bar -->
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <!-- Overview Container -->
+        <ScrollView
+            android:id="@+id/overviewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="System Overview"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Cheque Book Statistics -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cheque Book Statistics"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#757575"
+                    android:layout_marginBottom="12dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <!-- Total Cheque Books -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#2196F3">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Cheque Books"
+                                android:textColor="@android:color/white"
+                                android:textSize="13sp"
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:id="@+id/totalChequeBooksText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="@android:color/white"
+                                android:textSize="36sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="8dp" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Pending Approval -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#FF9800">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Pending Approval"
+                                android:textColor="@android:color/white"
+                                android:textSize="13sp"
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:id="@+id/pendingApprovalText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="@android:color/white"
+                                android:textSize="36sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="8dp" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Active Books -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#4CAF50">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Active Books"
+                                android:textColor="@android:color/white"
+                                android:textSize="13sp"
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:id="@+id/activeBooksText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="@android:color/white"
+                                android:textSize="36sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="8dp" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+                <!-- Cheque Statistics -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cheque Statistics"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#757575"
+                    android:layout_marginBottom="12dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <!-- Total Cheques Issued -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#607D8B">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Cheques Issued"
+                                android:textColor="@android:color/white"
+                                android:textSize="13sp"
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:id="@+id/totalChequesIssuedText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="@android:color/white"
+                                android:textSize="36sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="8dp" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Cleared Cheques -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#4CAF50">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Cleared Cheques"
+                                android:textColor="@android:color/white"
+                                android:textSize="13sp"
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:id="@+id/clearedChequesText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="@android:color/white"
+                                android:textSize="36sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="8dp" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Bounced Cheques -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#F44336">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Bounced Cheques"
+                                android:textColor="@android:color/white"
+                                android:textSize="13sp"
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:id="@+id/bouncedChequesText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="@android:color/white"
+                                android:textSize="36sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="8dp" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+                <!-- Financial Statistics -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Financial Statistics"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#757575"
+                    android:layout_marginBottom="12dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <!-- Total Amount Cleared -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#00BCD4">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Amount Cleared"
+                                android:textColor="@android:color/white"
+                                android:textSize="13sp"
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:id="@+id/totalAmountClearedText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="TAKA 0.00"
+                                android:textColor="@android:color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="8dp" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Total Amount Bounced -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#9C27B0">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Amount Bounced"
+                                android:textColor="@android:color/white"
+                                android:textSize="13sp"
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:id="@+id/totalAmountBouncedText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="TAKA 0.00"
+                                android:textColor="@android:color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="8dp" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Cheque Books Container -->
+        <ScrollView
+            android:id="@+id/chequeBooksContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Cheque Books Management Header -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cheque Books Management"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:layout_marginBottom="20dp" />
+
+                <!-- Search Section Card -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Search Cheque Books"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="#424242"
+                            android:layout_marginBottom="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/searchInput"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="Book number, account, or customer..."
+                                android:padding="12dp"
+                                android:background="@android:drawable/edit_text"
+                                android:textSize="14sp"
+                                android:layout_marginEnd="12dp" />
+
+                            <Button
+                                android:id="@+id/searchButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Search"
+                                android:textColor="@android:color/white"
+                                android:backgroundTint="#2196F3"
+                                android:paddingStart="24dp"
+                                android:paddingEnd="24dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Filters Section Card -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Filter Cheque Books"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="#424242"
+                            android:layout_marginBottom="16dp" />
+
+                        <!-- Status Row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:text="Status:"
+                                android:textSize="14sp"
+                                android:textColor="#424242"
+                                android:layout_gravity="center_vertical" />
+
+                            <Spinner
+                                android:id="@+id/statusSpinner"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:padding="8dp" />
+                        </LinearLayout>
+
+                        <!-- Date Range Row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="16dp">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal"
+                                android:layout_marginEnd="8dp">
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="From Date:"
+                                    android:textSize="14sp"
+                                    android:textColor="#424242"
+                                    android:layout_gravity="center_vertical" />
+
+                                <EditText
+                                    android:id="@+id/fromDateInput"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:hint="Select Date"
+                                    android:focusable="false"
+                                    android:clickable="true"
+                                    android:padding="10dp"
+                                    android:textSize="14sp"
+                                    android:background="@android:drawable/edit_text" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="To Date:"
+                                    android:textSize="14sp"
+                                    android:textColor="#424242"
+                                    android:layout_gravity="center_vertical" />
+
+                                <EditText
+                                    android:id="@+id/toDateInput"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:hint="Select Date"
+                                    android:focusable="false"
+                                    android:clickable="true"
+                                    android:padding="10dp"
+                                    android:textSize="14sp"
+                                    android:background="@android:drawable/edit_text" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Filter Button -->
+                        <Button
+                            android:id="@+id/filterButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Apply Filters"
+                            android:textColor="@android:color/white"
+                            android:backgroundTint="#4CAF50"
+                            android:paddingStart="24dp"
+                            android:paddingEnd="24dp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Cheque Books Table Card -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cheque Books List"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="#424242"
+                            android:padding="16dp"
+                            android:paddingBottom="12dp" />
+
+                        <!-- Horizontal Scroll for Table -->
+                        <HorizontalScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <!-- Table Header -->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:background="#E0E0E0"
+                                    android:padding="12dp">
+
+                                    <TextView
+                                        android:layout_width="150dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Book Number"
+                                        android:textStyle="bold"
+                                        android:textSize="13sp"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp" />
+
+                                    <TextView
+                                        android:layout_width="100dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Account"
+                                        android:textStyle="bold"
+                                        android:textSize="13sp"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp"
+                                        android:gravity="center" />
+
+                                    <TextView
+                                        android:layout_width="150dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Customer"
+                                        android:textStyle="bold"
+                                        android:textSize="13sp"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp"
+                                        android:gravity="center" />
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Status"
+                                        android:textStyle="bold"
+                                        android:textSize="13sp"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp"
+                                        android:gravity="center" />
+
+                                    <TextView
+                                        android:layout_width="100dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Total Leaves"
+                                        android:textStyle="bold"
+                                        android:textSize="13sp"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp"
+                                        android:gravity="center" />
+
+                                    <TextView
+                                        android:layout_width="100dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Remaining"
+                                        android:textStyle="bold"
+                                        android:textSize="13sp"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp"
+                                        android:gravity="center" />
+
+                                    <TextView
+                                        android:layout_width="150dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Request Date"
+                                        android:textStyle="bold"
+                                        android:textSize="13sp"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp"
+                                        android:gravity="center" />
+
+                                    <TextView
+                                        android:layout_width="150dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Approved By"
+                                        android:textStyle="bold"
+                                        android:textSize="13sp"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp"
+                                        android:gravity="center" />
+                                </LinearLayout>
+
+                                <!-- RecyclerView -->
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/chequeBooksRecyclerView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:minHeight="200dp"
+                                    android:background="@android:color/white" />
+                            </LinearLayout>
+                        </HorizontalScrollView>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Cheques Container -->
+        <ScrollView
+            android:id="@+id/chequesContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:visibility="gone">
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="All Cheques - Complete History"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:layout_marginBottom="20dp" />
+
+                <!-- Search Section Card -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Search Cheques"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="#424242"
+                            android:layout_marginBottom="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/searchChequesInput"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="Cheque number, account, customer, or payee..."
+                                android:padding="12dp"
+                                android:background="@android:drawable/edit_text"
+                                android:textSize="14sp"
+                                android:layout_marginEnd="12dp" />
+
+                            <Button
+                                android:id="@+id/searchChequesButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Search"
+                                android:textColor="@android:color/white"
+                                android:backgroundTint="#2196F3"
+                                android:paddingStart="24dp"
+                                android:paddingEnd="24dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Filter Section Card -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Filter Cheques"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="#424242"
+                            android:layout_marginBottom="16dp" />
+
+                        <!-- Status Row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:text="Status:"
+                                android:textSize="14sp"
+                                android:textColor="#424242"
+                                android:layout_gravity="center_vertical" />
+
+                            <Spinner
+                                android:id="@+id/chequeStatusSpinner"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:padding="8dp" />
+                        </LinearLayout>
+
+                        <!-- Date Range Row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="16dp">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal"
+                                android:layout_marginEnd="8dp">
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="From Date:"
+                                    android:textSize="14sp"
+                                    android:textColor="#424242"
+                                    android:layout_gravity="center_vertical" />
+
+                                <EditText
+                                    android:id="@+id/fromDateChequesInput"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:hint="Select Date"
+                                    android:focusable="false"
+                                    android:clickable="true"
+                                    android:padding="10dp"
+                                    android:textSize="14sp"
+                                    android:background="@android:drawable/edit_text" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="To Date:"
+                                    android:textSize="14sp"
+                                    android:textColor="#424242"
+                                    android:layout_gravity="center_vertical" />
+
+                                <EditText
+                                    android:id="@+id/toDateChequesInput"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:hint="Select Date"
+                                    android:focusable="false"
+                                    android:clickable="true"
+                                    android:padding="10dp"
+                                    android:textSize="14sp"
+                                    android:background="@android:drawable/edit_text" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Filter Button -->
+                        <Button
+                            android:id="@+id/filterChequesButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Apply Filters"
+                            android:textColor="@android:color/white"
+                            android:backgroundTint="#4CAF50"
+                            android:paddingStart="24dp"
+                            android:paddingEnd="24dp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Cheques Table Card -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cheques List"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="#424242"
+                            android:layout_marginBottom="12dp" />
+
+                        <HorizontalScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <!-- Table Header -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="#E0E0E0"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:text="Cheque Number"
+                                android:textStyle="bold"
+                                android:textColor="#424242"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp" />
+
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:text="Account"
+                                android:textStyle="bold"
+                                android:textColor="#424242"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp" />
+
+                            <TextView
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:text="Customer"
+                                android:textStyle="bold"
+                                android:textColor="#424242"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp" />
+
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="Amount (TAKA)"
+                                android:textStyle="bold"
+                                android:textColor="#424242"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp" />
+
+                            <TextView
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:text="Payee"
+                                android:textStyle="bold"
+                                android:textColor="#424242"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp" />
+
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="Status"
+                                android:textStyle="bold"
+                                android:textColor="#424242"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp" />
+
+                            <TextView
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:text="Issue Date"
+                                android:textStyle="bold"
+                                android:textColor="#424242"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp" />
+
+                            <TextView
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:text="Clearance Date"
+                                android:textStyle="bold"
+                                android:textColor="#424242"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp" />
+
+                            <TextView
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:text="Bounce Reason"
+                                android:textStyle="bold"
+                                android:textColor="#424242"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp" />
+                        </LinearLayout>
+
+                        <!-- Table Body - RecyclerView for rows -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/chequesRecyclerView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#FFFFFF" />
+
+                                <!-- Empty State -->
+                                <TextView
+                                    android:id="@+id/emptyChequesText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="No cheques found"
+                                    android:textSize="16sp"
+                                    android:textColor="#9E9E9E"
+                                    android:padding="32dp"
+                                    android:visibility="gone" />
+                            </LinearLayout>
+                        </HorizontalScrollView>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Transaction History Container -->
+        <ScrollView
+            android:id="@+id/transactionHistoryContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Complete Transaction Audit Trail"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:layout_marginBottom="20dp" />
+
+                <!-- Filter Section Card -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Filter Transactions"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="#424242"
+                            android:layout_marginBottom="16dp" />
+
+                        <!-- Transaction Type Row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:text="Type:"
+                                android:textSize="14sp"
+                                android:textColor="#424242"
+                                android:layout_gravity="center_vertical" />
+
+                            <Spinner
+                                android:id="@+id/transactionTypeSpinner"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:padding="8dp" />
+                        </LinearLayout>
+
+                        <!-- Date Range Row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="16dp">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal"
+                                android:layout_marginEnd="8dp">
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="From Date:"
+                                    android:textSize="14sp"
+                                    android:textColor="#424242"
+                                    android:layout_gravity="center_vertical" />
+
+                                <EditText
+                                    android:id="@+id/fromDateTransactionInput"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:hint="Select Date"
+                                    android:focusable="false"
+                                    android:clickable="true"
+                                    android:padding="10dp"
+                                    android:textSize="14sp"
+                                    android:background="@android:drawable/edit_text" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="To Date:"
+                                    android:textSize="14sp"
+                                    android:textColor="#424242"
+                                    android:layout_gravity="center_vertical" />
+
+                                <EditText
+                                    android:id="@+id/toDateTransactionInput"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:hint="Select Date"
+                                    android:focusable="false"
+                                    android:clickable="true"
+                                    android:padding="10dp"
+                                    android:textSize="14sp"
+                                    android:background="@android:drawable/edit_text" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Filter Button -->
+                        <Button
+                            android:id="@+id/filterTransactionButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Apply Filters"
+                            android:textColor="@android:color/white"
+                            android:backgroundTint="#00BCD4"
+                            android:paddingStart="24dp"
+                            android:paddingEnd="24dp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Transaction History Table Card -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Transaction History Records"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="#424242"
+                            android:layout_marginBottom="12dp" />
+
+                        <HorizontalScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <!-- Table Header -->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:background="#E0E0E0"
+                                    android:padding="8dp">
+
+                                    <TextView
+                                        android:layout_width="150dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Cheque Number"
+                                        android:textStyle="bold"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp" />
+
+                                    <TextView
+                                        android:layout_width="100dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Account"
+                                        android:textStyle="bold"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp" />
+
+                                    <TextView
+                                        android:layout_width="150dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Type"
+                                        android:textStyle="bold"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp" />
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Old Status"
+                                        android:textStyle="bold"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp" />
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="New Status"
+                                        android:textStyle="bold"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp" />
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Amount (TAKA)"
+                                        android:textStyle="bold"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp" />
+
+                                    <TextView
+                                        android:layout_width="180dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Date &amp; Time"
+                                        android:textStyle="bold"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp" />
+
+                                    <TextView
+                                        android:layout_width="150dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Performed By"
+                                        android:textStyle="bold"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp" />
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="User Type"
+                                        android:textStyle="bold"
+                                        android:textColor="#424242"
+                                        android:paddingStart="8dp"
+                                        android:paddingEnd="8dp" />
+                                </LinearLayout>
+
+                                <!-- Table Body - RecyclerView for rows -->
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/transactionHistoryRecyclerView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="#FFFFFF" />
+
+                                <!-- Empty State -->
+                                <TextView
+                                    android:id="@+id/emptyTransactionText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="No transaction history found"
+                                    android:textSize="16sp"
+                                    android:textColor="#9E9E9E"
+                                    android:padding="32dp"
+                                    android:visibility="gone" />
+                            </LinearLayout>
+                        </HorizontalScrollView>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Eligibility Settings Container -->
+        <ScrollView
+            android:id="@+id/eligibilitySettingsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cheque Book Eligibility Configuration"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:layout_marginBottom="24dp" />
+
+                <!-- Main Content Layout: stacked vertically for better readability -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <!-- Form Card -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#FFFFFF">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Add/Update Eligibility Criteria"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="#424242"
+                                android:layout_marginBottom="16dp" />
+
+                            <!-- Account Type -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Account Type: *"
+                                android:textSize="14sp"
+                                android:textColor="#424242"
+                                android:layout_marginBottom="4dp" />
+
+                            <Spinner
+                                android:id="@+id/accountTypeEligibilitySpinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
+                                android:padding="12dp" />
+
+                            <!-- Minimum Balance -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Minimum Balance (TAKA): *"
+                                android:textSize="14sp"
+                                android:textColor="#424242"
+                                android:layout_marginBottom="4dp" />
+
+                            <EditText
+                                android:id="@+id/minBalanceInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="e.g., 5000.00"
+                                android:inputType="numberDecimal"
+                                android:padding="12dp"
+                                android:background="@android:drawable/edit_text"
+                                android:layout_marginBottom="16dp" />
+
+                            <!-- Min Account Age -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Min Account Age (Days): *"
+                                android:textSize="14sp"
+                                android:textColor="#424242"
+                                android:layout_marginBottom="4dp" />
+
+                            <EditText
+                                android:id="@+id/minAccountAgeInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="e.g., 90"
+                                android:inputType="number"
+                                android:padding="12dp"
+                                android:background="@android:drawable/edit_text"
+                                android:layout_marginBottom="16dp" />
+
+                            <!-- Max Books Per Year -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Max Books Per Year: *"
+                                android:textSize="14sp"
+                                android:textColor="#424242"
+                                android:layout_marginBottom="4dp" />
+
+                            <EditText
+                                android:id="@+id/maxBooksPerYearInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="e.g., 4"
+                                android:inputType="number"
+                                android:padding="12dp"
+                                android:background="@android:drawable/edit_text"
+                                android:layout_marginBottom="16dp" />
+
+                            <!-- Leaves Per Book -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Leaves Per Book: *"
+                                android:textSize="14sp"
+                                android:textColor="#424242"
+                                android:layout_marginBottom="4dp" />
+
+                            <EditText
+                                android:id="@+id/leavesPerBookInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="e.g., 25"
+                                android:inputType="number"
+                                android:padding="12dp"
+                                android:background="@android:drawable/edit_text"
+                                android:layout_marginBottom="16dp" />
+
+                            <!-- Active Checkbox -->
+                            <CheckBox
+                                android:id="@+id/activeEligibilityCheckbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Enable this criteria"
+                                android:textSize="14sp"
+                                android:textColor="#424242"
+                                android:layout_marginBottom="20dp"
+                                android:checked="true" />
+
+                            <!-- Buttons -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <Button
+                                    android:id="@+id/saveCriteriaButton"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Save Criteria"
+                                    android:textColor="@android:color/white"
+                                    android:backgroundTint="#4CAF50"
+                                    android:layout_marginEnd="8dp" />
+
+                                <Button
+                                    android:id="@+id/clearFormButton"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Clear Form"
+                                    android:textColor="#424242"
+                                    android:backgroundTint="#E0E0E0" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Criteria List Card -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#FFFFFF">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Current Eligibility Criteria"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="#424242"
+                                android:layout_marginBottom="12dp" />
+
+                            <HorizontalScrollView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <!-- Table Header -->
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:background="#E0E0E0"
+                                        android:padding="8dp">
+
+                                        <TextView
+                                            android:layout_width="150dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="Account Type"
+                                            android:textStyle="bold"
+                                            android:textColor="#424242"
+                                            android:paddingStart="8dp"
+                                            android:paddingEnd="8dp" />
+
+                                        <TextView
+                                            android:layout_width="120dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="Min Balance"
+                                            android:textStyle="bold"
+                                            android:textColor="#424242"
+                                            android:paddingStart="8dp"
+                                            android:paddingEnd="8dp" />
+
+                                        <TextView
+                                            android:layout_width="120dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="Min Age (Days)"
+                                            android:textStyle="bold"
+                                            android:textColor="#424242"
+                                            android:paddingStart="8dp"
+                                            android:paddingEnd="8dp" />
+
+                                        <TextView
+                                            android:layout_width="120dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="Max Books/Yr"
+                                            android:textStyle="bold"
+                                            android:textColor="#424242"
+                                            android:paddingStart="8dp"
+                                            android:paddingEnd="8dp" />
+
+                                        <TextView
+                                            android:layout_width="120dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="Leaves/Book"
+                                            android:textStyle="bold"
+                                            android:textColor="#424242"
+                                            android:paddingStart="8dp"
+                                            android:paddingEnd="8dp" />
+
+                                        <TextView
+                                            android:layout_width="100dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="Active"
+                                            android:textStyle="bold"
+                                            android:textColor="#424242"
+                                            android:paddingStart="8dp"
+                                            android:paddingEnd="8dp" />
+                                    </LinearLayout>
+
+                                    <!-- Table Body - RecyclerView -->
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/eligibilityCriteriaRecyclerView"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:background="#FFFFFF" />
+
+                                    <!-- Empty State -->
+                                    <TextView
+                                        android:id="@+id/emptyEligibilityText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="No eligibility criteria configured"
+                                        android:textSize="16sp"
+                                        android:textColor="#9E9E9E"
+                                        android:padding="32dp"
+                                        android:visibility="gone" />
+                                </LinearLayout>
+                            </HorizontalScrollView>
+
+                            <!-- Delete Button Row -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="12dp">
+
+                                <Button
+                                    android:id="@+id/deleteSelectedButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Delete Selected"
+                                    android:textColor="@android:color/white"
+                                    android:backgroundTint="#F44336"
+                                    android:enabled="false" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Click on a row to edit"
+                                    android:textSize="14sp"
+                                    android:textColor="#9E9E9E"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="16dp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+                <!-- Information Box -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="#E3F2FD">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Information:"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="#1976D2"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="• These criteria determine which customers are eligible to request cheque books"
+                            android:textSize="13sp"
+                            android:textColor="#424242"
+                            android:layout_marginBottom="4dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="• All conditions must be met for a customer to be eligible"
+                            android:textSize="13sp"
+                            android:textColor="#424242"
+                            android:layout_marginBottom="4dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="• Changes take effect immediately for new requests"
+                            android:textSize="13sp"
+                            android:textColor="#424242"
+                            android:layout_marginBottom="4dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="• Click on a table row to load it for editing"
+                            android:textSize="13sp"
+                            android:textColor="#424242" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+</LinearLayout>

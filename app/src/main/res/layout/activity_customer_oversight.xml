@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#E8EAF6">
+
+    <!-- Header Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:background="@android:color/white"
+        android:elevation="4dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="← Back"
+            android:textColor="#5E35B1"
+            android:backgroundTint="@android:color/white"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            app:strokeColor="#5E35B1"
+            app:strokeWidth="1dp"
+            app:cornerRadius="8dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="CUSTOMER OVERSIGHT"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#5E35B1"
+            android:layout_marginStart="16dp"
+            android:shadowColor="#80000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"/>
+
+    </LinearLayout>
+
+    <!-- Statistics Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@android:color/white"
+        android:layout_marginBottom="2dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Accounts"
+                android:textSize="12sp"
+                android:textColor="#6B7280"/>
+
+            <TextView
+                android:id="@+id/totalAccountsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#424242"
+                android:layout_marginTop="4dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Active"
+                android:textSize="12sp"
+                android:textColor="#6B7280"/>
+
+            <TextView
+                android:id="@+id/activeAccountsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#4CAF50"
+                android:layout_marginTop="4dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Blocked"
+                android:textSize="12sp"
+                android:textColor="#6B7280"/>
+
+            <TextView
+                android:id="@+id/blockedAccountsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#F44336"
+                android:layout_marginTop="4dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Balance"
+                android:textSize="12sp"
+                android:textColor="#6B7280"/>
+
+            <TextView
+                android:id="@+id/totalBalanceText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="৳0.00"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#424242"
+                android:layout_marginTop="4dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Search and Filter Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:hint="Search by account number or name..."
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@android:color/white"
+            android:textSize="14sp"
+            android:layout_marginEnd="12dp"
+            android:elevation="2dp"/>
+
+        <Spinner
+            android:id="@+id/filterSpinner"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:background="@android:color/white"
+            android:elevation="2dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"/>
+
+    </LinearLayout>
+
+    <!-- Table Section -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:elevation="2dp">
+
+            <!-- Table Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E0E0E0"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Account #"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Owner Name"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Type"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:text="Balance"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Status"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:text="Created Date"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"/>
+
+            </LinearLayout>
+
+            <!-- Table Content -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/accountsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="400dp"/>
+
+            <!-- Empty State -->
+            <TextView
+                android:id="@+id/emptyStateText"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:text="No content in table"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textColor="#9E9E9E"
+                android:visibility="visible"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Action Buttons Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:background="@android:color/white"
+        android:elevation="4dp">
+
+        <!-- First Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/blockButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Block Account"
+                android:textColor="@android:color/white"
+                android:backgroundTint="#F44336"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                app:cornerRadius="8dp"
+                android:layout_marginEnd="8dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/unblockButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Unblock Account"
+                android:textColor="@android:color/white"
+                android:backgroundTint="#4CAF50"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                app:cornerRadius="8dp"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+
+        <!-- Second Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/approveButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Approve Account"
+                android:textColor="@android:color/white"
+                android:backgroundTint="#2196F3"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                app:cornerRadius="8dp"
+                android:layout_marginEnd="8dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/viewDetailsButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="View Details"
+                android:textColor="#424242"
+                android:backgroundTint="@android:color/white"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                app:cornerRadius="8dp"
+                app:strokeColor="#E0E0E0"
+                app:strokeWidth="1dp"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

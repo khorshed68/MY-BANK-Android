@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#E8EAF6">
+
+    <!-- Header Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:background="@android:color/white"
+        android:elevation="4dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="← Back"
+            android:textColor="#5E35B1"
+            android:backgroundTint="@android:color/white"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            app:strokeColor="#5E35B1"
+            app:strokeWidth="1dp"
+            app:cornerRadius="8dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TRANSACTION MONITORING"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#5E35B1"
+            android:layout_marginStart="16dp"
+            android:shadowColor="#80000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"/>
+
+    </LinearLayout>
+
+    <!-- Search and Filter Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- First Row: Search, Filter Dropdown -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:hint="Search by Account Number"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:background="@android:color/white"
+                android:textSize="14sp"
+                android:layout_marginEnd="12dp"
+                android:elevation="2dp"/>
+
+            <Spinner
+                android:id="@+id/filterSpinner"
+                android:layout_width="160dp"
+                android:layout_height="50dp"
+                android:background="@android:color/white"
+                android:elevation="2dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"/>
+
+        </LinearLayout>
+
+        <!-- Second Row: Date Pickers -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <EditText
+                android:id="@+id/startDateEditText"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:hint="Start Date"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:background="@android:color/white"
+                android:textSize="14sp"
+                android:focusable="false"
+                android:clickable="true"
+                android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                android:layout_marginEnd="12dp"
+                android:elevation="2dp"/>
+
+            <EditText
+                android:id="@+id/endDateEditText"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:hint="End Date"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:background="@android:color/white"
+                android:textSize="14sp"
+                android:focusable="false"
+                android:clickable="true"
+                android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                android:elevation="2dp"/>
+
+        </LinearLayout>
+
+        <!-- Third Row: Search and Refresh Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/searchButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="🔍 Search"
+                android:textColor="@android:color/white"
+                android:backgroundTint="#5E35B1"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                app:cornerRadius="8dp"
+                android:layout_marginEnd="8dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/refreshButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="🔄 Refresh"
+                android:textColor="#5E35B1"
+                android:backgroundTint="@android:color/white"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                app:cornerRadius="8dp"
+                app:strokeColor="#5E35B1"
+                app:strokeWidth="1dp"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Summary Section -->
+    <TextView
+        android:id="@+id/summaryText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Showing 0 transactions | Total Amount: ৳0.00"
+        android:textSize="14sp"
+        android:textColor="#424242"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"/>
+
+    <!-- Table Section -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:elevation="2dp">
+
+            <!-- Table Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E0E0E0"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="ID"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Account"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:text="Type"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Amount"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Date/Time"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Description"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Status"
+                    android:textStyle="bold"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:paddingStart="8dp"/>
+
+            </LinearLayout>
+
+            <!-- Table Content -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/transactionsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="400dp"/>
+
+            <!-- Empty State -->
+            <TextView
+                android:id="@+id/emptyStateText"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:text="No transactions found"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textColor="#9E9E9E"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Action Buttons Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center"
+        android:background="@android:color/white"
+        android:elevation="4dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/flagTransactionButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="🚩 Flag Transaction"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#FF9800"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            app:cornerRadius="8dp"
+            android:layout_marginEnd="8dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/reverseTransactionButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="✕ Reverse Transaction"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#F44336"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            app:cornerRadius="8dp"
+            android:layout_marginStart="8dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
