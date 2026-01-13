@@ -41,6 +41,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     private EditText nameInput, emailInput, phoneInput, addressInput;
     private EditText identityNumberInput, initialDepositInput;
+    private EditText passwordInput, confirmPasswordInput;
     private Spinner identityTypeSpinner, accountTypeSpinner;
     private Button submitButton, backButton, chooseImageButton;
     private ImageView profileImageView;
@@ -93,6 +94,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         addressInput = findViewById(R.id.addressInput);
         identityNumberInput = findViewById(R.id.identityNumberInput);
         initialDepositInput = findViewById(R.id.initialDepositInput);
+        passwordInput = findViewById(R.id.passwordInput);
+        confirmPasswordInput = findViewById(R.id.confirmPasswordInput);
         identityTypeSpinner = findViewById(R.id.identityTypeSpinner);
         accountTypeSpinner = findViewById(R.id.accountTypeSpinner);
         submitButton = findViewById(R.id.submitButton);
@@ -242,12 +245,10 @@ public class CreateAccountActivity extends AppCompatActivity {
         String identityNumber = identityNumberInput.getText().toString().trim();
         String accountType = accountTypeSpinner.getSelectedItem().toString();
         double initialDeposit = Double.parseDouble(initialDepositInput.getText().toString().trim());
+        String password = passwordInput.getText().toString().trim();
 
-        // Auto-generate password
-        String autoPassword = "CUSTOMER_" + phone;
-
-        // Create user in Firebase Auth
-        auth.createUserWithEmailAndPassword(email, autoPassword)
+        // Create user in Firebase Auth with staff-provided password
+        auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
                     String userId = authResult.getUser().getUid();
                     createUserProfile(userId, name, email, phone, address, identityType,
@@ -377,6 +378,30 @@ public class CreateAccountActivity extends AppCompatActivity {
         if (deposit < 1000) {
             initialDepositInput.setError("Minimum deposit is ৳1000");
             initialDepositInput.requestFocus();
+            return false;
+        }
+
+        if (passwordInput.getText().toString().trim().isEmpty()) {
+            passwordInput.setError("Password is required");
+            passwordInput.requestFocus();
+            return false;
+        }
+
+        if (passwordInput.getText().toString().trim().length() < 6) {
+            passwordInput.setError("Password must be at least 6 characters");
+            passwordInput.requestFocus();
+            return false;
+        }
+
+        if (confirmPasswordInput.getText().toString().trim().isEmpty()) {
+            confirmPasswordInput.setError("Please confirm password");
+            confirmPasswordInput.requestFocus();
+            return false;
+        }
+
+        if (!passwordInput.getText().toString().trim().equals(confirmPasswordInput.getText().toString().trim())) {
+            confirmPasswordInput.setError("Passwords do not match");
+            confirmPasswordInput.requestFocus();
             return false;
         }
 

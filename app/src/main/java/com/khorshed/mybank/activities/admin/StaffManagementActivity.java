@@ -188,33 +188,37 @@ public class StaffManagementActivity extends AppCompatActivity implements StaffA
 
     private void loadStaffData() {
         db.collection("users")
-                .whereEqualTo("role", "STAFF")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     staffList.clear();
                     int index = 1;
                     for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                        Staff staff = new Staff();
-                        staff.setId(String.valueOf(index++));
-                        staff.setUsername(doc.getString("username") != null ? doc.getString("username") : "N/A");
-                        staff.setFullName(doc.getString("name") != null ? doc.getString("name") : doc.getString("fullName") != null ? doc.getString("fullName") : "N/A");
-                        staff.setEmail(doc.getString("email") != null ? doc.getString("email") : "N/A");
-                        staff.setRole(doc.getString("role") != null ? doc.getString("role") : "STAFF");
-                        
-                        // Get status - check multiple possible field names
-                        String status = "Active";
-                        if (doc.contains("status")) {
-                            status = doc.getString("status");
-                        } else if (doc.contains("isActive")) {
-                            Boolean isActive = doc.getBoolean("isActive");
-                            status = (isActive != null && isActive) ? "Active" : "Inactive";
+                        // Check if this is a staff member
+                        String role = doc.getString("role");
+                        if (role != null && role.equalsIgnoreCase("STAFF")) {
+                            Staff staff = new Staff();
+                            staff.setId(String.valueOf(index++));
+                            staff.setUsername(doc.getString("username") != null ? doc.getString("username") : doc.getString("email") != null ? doc.getString("email").split("@")[0] : "N/A");
+                            staff.setFullName(doc.getString("name") != null ? doc.getString("name") : doc.getString("fullName") != null ? doc.getString("fullName") : "N/A");
+                            staff.setEmail(doc.getString("email") != null ? doc.getString("email") : "N/A");
+                            staff.setRole(doc.getString("role") != null ? doc.getString("role") : "STAFF");
+                            
+                            // Get status - check multiple possible field names
+                            String status = "Active";
+                            if (doc.contains("status")) {
+                                status = doc.getString("status");
+                            } else if (doc.contains("isActive")) {
+                                Boolean isActive = doc.getBoolean("isActive");
+                                status = (isActive != null && isActive) ? "Active" : "Inactive";
+                            }
+                            staff.setStatus(status);
+                            
+                            staffList.add(staff);
                         }
-                        staff.setStatus(status);
-                        
-                        staffList.add(staff);
                     }
                     staffAdapter.updateStaffList(staffList);
                     updateEmptyState();
+                    Toast.makeText(this, "Loaded " + staffList.size() + " staff members", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Error loading staff: " + e.getMessage(), Toast.LENGTH_LONG).show();

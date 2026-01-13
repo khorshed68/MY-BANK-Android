@@ -225,8 +225,26 @@ public class ChequeManagementActivity extends AppCompatActivity
         backToDashboardButton.setOnClickListener(v -> finish());
         
         refreshAllButton.setOnClickListener(v -> {
-            loadPendingRequests();
-            Toast.makeText(this, "Refreshed", Toast.LENGTH_SHORT).show();
+            // Refresh based on currently selected tab
+            int currentTab = chequeTabLayout.getSelectedTabPosition();
+            switch (currentTab) {
+                case 0:
+                    loadPendingRequests();
+                    break;
+                case 1:
+                    loadDepositedCheques();
+                    break;
+                case 2:
+                    loadAllChequeBooks();
+                    break;
+                case 3:
+                    loadAllCheques();
+                    break;
+                case 4:
+                    loadStatistics();
+                    break;
+            }
+            Toast.makeText(this, "✅ Refreshed", Toast.LENGTH_SHORT).show();
         });
         
         approveButton.setOnClickListener(v -> {
@@ -1141,7 +1159,7 @@ public class ChequeManagementActivity extends AppCompatActivity
         // Clearance Date
         String clearanceDate = "";
         if (cheque.getClearanceDate() != null) {
-            clearanceDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", 
+            clearanceDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", 
                 java.util.Locale.getDefault()).format(cheque.getClearanceDate());
         }
         addCellToChequeRow(row, clearanceDate);
